@@ -75,6 +75,7 @@ export default function RoomPage() {
   const currentQuizQuestionIndexRef = useRef(-1);
   const quizSubmitInFlightRef = useRef(false);
   const testQuestionStartRef = useRef({});
+  const testAnsweredRef = useRef([]);
   const [presenceToasts, setPresenceToasts] = useState([]);
   const [quizAnsweredUsers, setQuizAnsweredUsers] = useState([]);
 
@@ -117,9 +118,14 @@ export default function RoomPage() {
     };
   }, []);
 
+  
   useEffect(() => {
     updateRoom({ selectedOption: -1 });
   }, [activeTestQuestionIndex]);
+
+  useEffect(() => {
+    testAnsweredRef.current = testAnsweredQuestionIndices;
+  }, [testAnsweredQuestionIndices]);
 
   useEffect(() => {
     if (mode === "QUIZ") {
@@ -419,6 +425,7 @@ export default function RoomPage() {
         info: `Section ${payload.section_index + 1} started: ${payload.section_topic}`,
         testAnsweredQuestionIndices: [],
       });
+      testAnsweredRef.current = [];
       const firstQuestion = (payload.questions ?? [])[0];
       updateRoom({ activeTestQuestionIndex: firstQuestion?.question_index ?? -1 });
       if (firstQuestion?.question_index !== undefined) {
@@ -515,12 +522,12 @@ export default function RoomPage() {
         updateRoom({ submitted: true });
         quizSubmitInFlightRef.current = false;
       }
-      if (mode === "TEST") {
+      if (payload.current_section !== undefined || payload.test_ends_at !== undefined) {
         const questionIndex = payload.question_index;
         if (typeof questionIndex === "number") {
-          const nextAnswered = testAnsweredQuestionIndices.includes(questionIndex)
-            ? testAnsweredQuestionIndices
-            : [...testAnsweredQuestionIndices, questionIndex];
+          const currentAnswered = Array.isArray(testAnsweredRef.current) ? testAnsweredRef.current : [];
+          const nextAnswered = currentAnswered.includes(questionIndex) ? currentAnswered : [...currentAnswered, questionIndex];
+          testAnsweredRef.current = nextAnswered;
           updateRoom({ testAnsweredQuestionIndices: nextAnswered });
         }
       }
@@ -915,6 +922,15 @@ export default function RoomPage() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
 
 
 
