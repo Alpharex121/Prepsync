@@ -16,6 +16,40 @@ from app.services.realtime import get_realtime_engine
 from app.services.room import RoomService, get_room_service
 
 router = APIRouter(prefix="/rooms", tags=["rooms"])
+@router.get(
+    "/current",
+    dependencies=[Depends(rate_limit(120, 60, "room_current"))],
+)
+async def current_room(
+    user_id: str,
+    room_service: RoomService = Depends(get_room_service),
+) -> dict:
+    engine = get_realtime_engine()
+    get_user_rooms = getattr(engine, "get_user_rooms", None)
+    candidate_rooms = get_user_rooms(user_id) if callable(get_user_rooms) else []
+
+    active_choice: str | None = None
+    generating_choice: str | None = None
+    for candidate in candidate_rooms:
+        room_status = await room_service.get_status(candidate)
+        if room_status is None:
+            continue
+        if room_status == RoomStatus.ACTIVE:
+            active_choice = candidate
+            break
+        if room_status == RoomStatus.GENERATING:
+            generating_choice = candidate
+
+    selected = active_choice or generating_choice
+    if not selected:
+        return {"has_ongoing": False, "room_id": None, "status": None}
+
+    selected_status = await room_service.get_status(selected)
+    return {
+        "has_ongoing": True,
+        "room_id": selected,
+        "status": selected_status.value if selected_status else None,
+    }
 
 
 @router.post(
@@ -26,9 +60,10 @@ router = APIRouter(prefix="/rooms", tags=["rooms"])
 )
 async def create_room(
     payload: RoomCreateRequest,
+    user_id: str,
     room_service: RoomService = Depends(get_room_service),
 ) -> RoomCreateResponse:
-    room_id = await room_service.create_room(payload.config)
+    room_id = await room_service.create_room(payload.config.model_copy(update={"owner_id": user_id}))
     room_status = await room_service.get_status(room_id)
     if room_status is None:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Room init failed")
@@ -43,15 +78,21 @@ async def create_room(
 )
 async def join_check(
     room_id: str,
+    user_id: str | None = None,
     room_service: RoomService = Depends(get_room_service),
 ) -> RoomJoinCheckResponse:
     room_status = await room_service.get_status(room_id)
     if room_status is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Room not found")
 
+    can_join = room_status.value == "LOBBY"
+    if not can_join and user_id:
+        engine = get_realtime_engine()
+        can_join = engine.has_session(room_id, user_id)
+
     return RoomJoinCheckResponse(
         room_id=room_id,
-        can_join=(room_status.value == "LOBBY"),
+        can_join=can_join,
         status=room_status,
     )
 
@@ -64,8 +105,17 @@ async def join_check(
 async def transition_room(
     room_id: str,
     payload: RoomTransitionRequest,
+    user_id: str,
     room_service: RoomService = Depends(get_room_service),
 ) -> RoomStateResponse:
+    try:
+        owner_id = await room_service.get_owner_id(room_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    if owner_id and owner_id != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only room admin can start or transition")
+
     try:
         room_status = await room_service.transition_status(room_id, payload.status)
     except ValueError as exc:
@@ -112,17 +162,37 @@ async def transition_room(
 )
 async def generate_questions(
     room_id: str,
+    user_id: str,
     room_service: RoomService = Depends(get_room_service),
 ) -> RoomGenerationResponse:
+    try:
+        owner_id = await room_service.get_owner_id(room_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    if owner_id and owner_id != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only room admin can start the session")
+
     current_status = await room_service.get_status(room_id)
     if current_status is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Room not found")
     if current_status != RoomStatus.LOBBY:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Room must be in LOBBY")
 
-    await room_service.transition_status(room_id, RoomStatus.GENERATING)
-    config = await room_service.get_config(room_id)
+    generating_status = await room_service.transition_status(room_id, RoomStatus.GENERATING)
+    engine = get_realtime_engine()
+    await engine.broadcast(
+        room_id,
+        {
+            "type": "ROOM_STATE_CHANGE",
+            "status": generating_status.value,
+            "ends_at": 0,
+            "test_ends_at": 0,
+            "current_question": 0,
+        },
+    )
 
+    config = await room_service.get_config(room_id)
     package = await quiz_generator.generate(config)
     await room_service.save_question_package(room_id, package)
     history_service.persist_quiz_history(room_id, config, package)
@@ -130,7 +200,6 @@ async def generate_questions(
     active_status = await room_service.transition_status(room_id, RoomStatus.ACTIVE)
     timing = await room_service.activate_session(room_id)
 
-    engine = get_realtime_engine()
     await engine.broadcast(
         room_id,
         {
@@ -155,3 +224,5 @@ async def generate_questions(
         test_ends_at=timing["test_ends_at"],
         current_question=timing["current_question"],
     )
+
+

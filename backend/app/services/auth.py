@@ -1,34 +1,117 @@
 from collections.abc import Mapping
 from datetime import UTC, datetime, timedelta
 
+import psycopg
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from psycopg.errors import UniqueViolation
 
 from app.core.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 
-# Phase 2 in-memory store. Replace with PostgreSQL repository in next phases.
-_users: dict[str, str] = {}
+
+def _ensure_users_table() -> None:
+    with psycopg.connect(settings.postgres_url) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS users (
+                    id SERIAL PRIMARY KEY,
+                    username TEXT NOT NULL UNIQUE,
+                    password_hash TEXT NOT NULL,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                )
+                """
+            )
+        connection.commit()
 
 
 def register_user(username: str, password: str) -> None:
-    if username in _users:
-        raise ValueError("Username already exists")
-    _users[username] = get_password_hash(password)
+    hashed = get_password_hash(password)
+
+    try:
+        with psycopg.connect(settings.postgres_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        username TEXT NOT NULL UNIQUE,
+                        password_hash TEXT NOT NULL,
+                        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                    )
+                    """
+                )
+                cursor.execute(
+                    "INSERT INTO users (username, password_hash) VALUES (%s, %s)",
+                    (username, hashed),
+                )
+            connection.commit()
+    except UniqueViolation as exc:
+        raise ValueError("Username already exists") from exc
+    except Exception as exc:
+        raise RuntimeError("Unable to save user to database") from exc
+
+
+def _get_password_hash(username: str) -> str | None:
+    try:
+        with psycopg.connect(settings.postgres_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        username TEXT NOT NULL UNIQUE,
+                        password_hash TEXT NOT NULL,
+                        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                    )
+                    """
+                )
+                cursor.execute(
+                    "SELECT password_hash FROM users WHERE username = %s",
+                    (username,),
+                )
+                row = cursor.fetchone()
+            connection.commit()
+    except Exception as exc:
+        raise RuntimeError("Unable to read user from database") from exc
+
+    if not row:
+        return None
+    return str(row[0])
 
 
 def authenticate_user(username: str, password: str) -> bool:
-    hashed_password = _users.get(username)
+    hashed_password = _get_password_hash(username)
     if not hashed_password:
         return False
     return verify_password(password, hashed_password)
 
 
 def get_user(username: str) -> Mapping[str, str] | None:
-    if username not in _users:
+    try:
+        with psycopg.connect(settings.postgres_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        username TEXT NOT NULL UNIQUE,
+                        password_hash TEXT NOT NULL,
+                        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                    )
+                    """
+                )
+                cursor.execute("SELECT username FROM users WHERE username = %s", (username,))
+                row = cursor.fetchone()
+            connection.commit()
+    except Exception as exc:
+        raise RuntimeError("Unable to read user from database") from exc
+
+    if not row:
         return None
-    return {"username": username}
+    return {"username": str(row[0])}
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -57,3 +140,10 @@ def decode_access_token(token: str) -> str:
         raise ValueError("Invalid token subject")
     return username
 
+
+# Ensure table exists at import/startup paths too.
+try:
+    _ensure_users_table()
+except Exception:
+    # Requests will return explicit DB errors when auth endpoints are used.
+    pass

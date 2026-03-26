@@ -100,30 +100,32 @@ export default function HistoryPage() {
           <p className="muted-text">
             User: {report.user_id} | Mode: {report.mode}
           </p>
-          <table className="report-table">
-            <thead>
-              <tr>
-                <th>Q#</th>
-                <th>Topic</th>
-                <th>Selected</th>
-                <th>Correct</th>
-                <th>Result</th>
-                <th>Time (ms)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {report.attempts.map((attempt) => (
-                <tr key={attempt.question_index}>
-                  <td>{attempt.question_index + 1}</td>
-                  <td>{attempt.topic}</td>
-                  <td>{attempt.selected_option ?? "-"}</td>
-                  <td>{attempt.correct_index}</td>
-                  <td>{attempt.is_correct ? "Correct" : "Wrong/Unanswered"}</td>
-                  <td>{attempt.time_taken_ms}</td>
+          <div className="table-container">
+            <table className="report-table">
+              <thead>
+                <tr>
+                  <th>Q#</th>
+                  <th>Topic</th>
+                  <th>Selected</th>
+                  <th>Correct</th>
+                  <th>Result</th>
+                  <th>Time (ms)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {report.attempts.map((attempt) => (
+                  <tr key={attempt.question_index}>
+                    <td>{attempt.question_index + 1}</td>
+                    <td>{attempt.topic}</td>
+                    <td>{attempt.selected_option ?? "-"}</td>
+                    <td>{attempt.correct_index}</td>
+                    <td>{attempt.is_correct ? "Correct" : "Wrong/Unanswered"}</td>
+                    <td>{attempt.time_taken_ms}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </article>
       ) : null}
 

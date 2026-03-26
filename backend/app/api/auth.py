@@ -19,6 +19,8 @@ async def register(payload: UserRegisterRequest) -> AuthResponse:
         register_user(payload.username, payload.password)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
 
     access_token = create_access_token(payload.username)
     return AuthResponse(access_token=access_token, username=payload.username)
@@ -30,7 +32,11 @@ async def register(payload: UserRegisterRequest) -> AuthResponse:
     dependencies=[Depends(rate_limit(30, 60, "auth_login"))],
 )
 async def login(payload: UserLoginRequest) -> AuthResponse:
-    is_authenticated = authenticate_user(payload.username, payload.password)
+    try:
+        is_authenticated = authenticate_user(payload.username, payload.password)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+
     if not is_authenticated:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 

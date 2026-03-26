@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="auth-card">
+    <section className="auth-card animate-slide-up">
       <h2>{title}</h2>
       <form className="auth-form" onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>

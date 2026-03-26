@@ -15,11 +15,19 @@ class RoomMode(str, Enum):
     TEST = "TEST"
 
 
+class DifficultyLevel(str, Enum):
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
+
+
 class RoomConfig(BaseModel):
+    owner_id: str = Field(default="", min_length=0, max_length=64)
     mode: RoomMode = RoomMode.QUIZ
     count: int = Field(default=10, ge=1, le=200)
     time_per_q: int = Field(default=60, ge=5, le=3600)
     time_per_section: int = Field(default=300, ge=30, le=7200)
+    difficulty: DifficultyLevel = DifficultyLevel.MEDIUM
     exams: list[str] = Field(default_factory=list)
     topics: list[str] = Field(default_factory=list)
 

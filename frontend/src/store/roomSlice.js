@@ -5,6 +5,7 @@ const initialState = {
   count: 5,
   timePerQ: 45,
   timePerSection: 300,
+  difficulty: "medium",
   topics: "Averages, Profit and Loss, Work and Time",
   exams: "GATE, SSC",
 
@@ -17,12 +18,14 @@ const initialState = {
 
   connectionState: "disconnected",
 
+  ownerId: "",
   participants: [],
 
   endsAt: 0,
   testEndsAt: 0,
   countdown: 0,
 
+  totalQuizQuestions: 0,
   quizQuestionIndex: 0,
   quizQuestion: null,
   selectedOption: -1,
@@ -40,6 +43,7 @@ const initialState = {
 };
 
 function applySessionReset(state) {
+  state.totalQuizQuestions = 0;
   state.quizQuestionIndex = 0;
   state.quizQuestion = null;
   state.selectedOption = -1;
@@ -61,6 +65,26 @@ const roomSlice = createSlice({
     patchRoom(state, action) {
       Object.assign(state, action.payload);
     },
+    addParticipant(state, action) {
+      const userId = String(action.payload || "").trim();
+      if (!userId) {
+        return;
+      }
+      if (!state.participants.includes(userId)) {
+        state.participants.push(userId);
+      }
+    },
+    setParticipants(state, action) {
+      const raw = Array.isArray(action.payload) ? action.payload : [];
+      const unique = [];
+      for (const userId of raw) {
+        const normalized = String(userId || "").trim();
+        if (normalized && !unique.includes(normalized)) {
+          unique.push(normalized);
+        }
+      }
+      state.participants = unique;
+    },
     resetSessionViews(state) {
       applySessionReset(state);
     },
@@ -70,6 +94,6 @@ const roomSlice = createSlice({
   },
 });
 
-export const { patchRoom, resetSessionViews, resetRoomState } = roomSlice.actions;
+export const { patchRoom, addParticipant, setParticipants, resetSessionViews, resetRoomState } = roomSlice.actions;
 
 export default roomSlice.reducer;

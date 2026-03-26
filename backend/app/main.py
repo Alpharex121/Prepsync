@@ -33,6 +33,14 @@ app.include_router(room_router)
 app.include_router(history_router)
 
 
+async def _safe_send_json(websocket: WebSocket, payload: dict) -> bool:
+    try:
+        await websocket.send_json(payload)
+        return True
+    except (RuntimeError, WebSocketDisconnect):
+        return False
+
+
 @app.middleware("http")
 async def request_logging_middleware(request: Request, call_next):
     start = timed()
@@ -69,9 +77,11 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
 
     if user_id and engine.has_session(room_id, user_id):
         await engine.connect(room_id, user_id, websocket)
-        await websocket.send_json({"type": "RECONNECTED", "room_id": room_id, "user_id": user_id})
+        if not await _safe_send_json(websocket, {"type": "RECONNECTED", "room_id": room_id, "user_id": user_id}):
+            return
     else:
-        await websocket.send_json({"type": "CONNECTED", "room_id": room_id})
+        if not await _safe_send_json(websocket, {"type": "CONNECTED", "room_id": room_id}):
+            return
 
     try:
         while True:
@@ -82,24 +92,29 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
                 try:
                     event = JoinRoomEvent.model_validate(payload)
                 except ValidationError as exc:
-                    await websocket.send_json({"type": "ERROR", "detail": f"Invalid JOIN_ROOM payload: {exc}"})
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Invalid JOIN_ROOM payload: {exc}"})
                     continue
 
                 user_id = event.user_id
                 await engine.connect(room_id, user_id, websocket)
                 await engine.touch(room_id, user_id)
                 ack = await engine.handle_join_room(room_id, user_id)
-                await websocket.send_json(ack)
+                if not await _safe_send_json(websocket, ack):
+                    await engine.disconnect(room_id, user_id)
+                    return
                 await engine.broadcast(
                     room_id,
-                    {"type": "USER_JOINED", "room_id": room_id, "user_id": user_id},
+                    {
+                        "type": "USER_JOINED",
+                        "room_id": room_id,
+                        "user_id": user_id,
+                        "participants": engine.get_participants(room_id),
+                    },
                 )
                 continue
 
             if not user_id:
-                await websocket.send_json(
-                    {"type": "ERROR", "detail": "JOIN_ROOM is required before this event"}
-                )
+                await _safe_send_json(websocket, {"type": "ERROR", "detail": "JOIN_ROOM is required before this event"})
                 continue
 
             await engine.touch(room_id, user_id)
@@ -107,20 +122,18 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
             if event_type == "ROOM_STATE_CHANGE":
                 try:
                     event = RoomStateChangeEvent.model_validate(payload)
-                    ws_event = await engine.handle_room_state_change(room_id, event.status)
+                    ws_event = await engine.handle_room_state_change(room_id, user_id, event.status)
                 except (ValidationError, ValueError) as exc:
-                    await websocket.send_json({"type": "ERROR", "detail": str(exc)})
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": str(exc)})
                 else:
-                    await websocket.send_json(ws_event)
+                    await _safe_send_json(websocket, ws_event)
                 continue
 
             if event_type == "SUBMIT_ANSWER":
                 try:
                     event = SubmitAnswerEvent.model_validate(payload)
                 except ValidationError as exc:
-                    await websocket.send_json(
-                        {"type": "ERROR", "detail": f"Invalid SUBMIT_ANSWER payload: {exc}"}
-                    )
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Invalid SUBMIT_ANSWER payload: {exc}"})
                     continue
 
                 ws_event = await engine.handle_submit_answer(
@@ -129,46 +142,52 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
                     question_index=event.question_index,
                     selected_option=event.selected_option,
                 )
-                await websocket.send_json(ws_event)
+                await _safe_send_json(websocket, ws_event)
                 continue
 
             if event_type == "NAVIGATE_QUESTION":
                 try:
                     event = NavigateQuestionEvent.model_validate(payload)
                 except ValidationError as exc:
-                    await websocket.send_json(
-                        {"type": "ERROR", "detail": f"Invalid NAVIGATE_QUESTION payload: {exc}"}
-                    )
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Invalid NAVIGATE_QUESTION payload: {exc}"})
                     continue
 
                 ws_event = await engine.handle_navigate_question(room_id, user_id, event.question_index)
-                await websocket.send_json(ws_event)
+                await _safe_send_json(websocket, ws_event)
                 continue
 
             if event_type == "SUBMIT_SECTION":
                 try:
                     event = SubmitSectionEvent.model_validate(payload)
                 except ValidationError as exc:
-                    await websocket.send_json(
-                        {"type": "ERROR", "detail": f"Invalid SUBMIT_SECTION payload: {exc}"}
-                    )
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Invalid SUBMIT_SECTION payload: {exc}"})
                     continue
 
                 ws_event = await engine.handle_submit_section(room_id, user_id, event.section_index)
-                await websocket.send_json(ws_event)
+                await _safe_send_json(websocket, ws_event)
                 continue
 
             if event_type == "FINAL_RESULTS":
                 ws_event = await engine.finalize_results(room_id)
-                await websocket.send_json(ws_event)
+                await _safe_send_json(websocket, ws_event)
                 continue
 
-            await websocket.send_json({"type": "ERROR", "detail": f"Unknown event: {event_type}"})
+            await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Unknown event: {event_type}"})
 
     except WebSocketDisconnect:
         if user_id:
             await engine.disconnect(room_id, user_id)
+            await engine.broadcast(
+                room_id,
+                {
+                    "type": "USER_LEFT",
+                    "room_id": room_id,
+                    "user_id": user_id,
+                    "participants": engine.get_participants(room_id),
+                },
+            )
         return
     except Exception as exc:
         log_error("websocket_room", exc)
         raise
+

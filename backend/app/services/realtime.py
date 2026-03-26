@@ -56,11 +56,24 @@ class RealtimeEngine:
         sessions = self._room_sessions.get(room_id, {})
         return user_id in sessions
 
+    def get_participants(self, room_id: str) -> list[str]:
+        return sorted(self._room_participants.get(room_id, set()))
+
+    def get_user_rooms(self, user_id: str) -> list[str]:
+        user_rooms: set[str] = set()
+        for room_id, participants in self._room_participants.items():
+            if user_id in participants:
+                user_rooms.add(room_id)
+        for room_id, sessions in self._room_sessions.items():
+            if user_id in sessions:
+                user_rooms.add(room_id)
+        return sorted(user_rooms)
+
     async def connect(self, room_id: str, user_id: str, websocket: WebSocket) -> None:
         sessions = self._room_sessions.setdefault(room_id, {})
 
         previous = sessions.get(user_id)
-        if previous and previous.connected:
+        if previous and previous.connected and previous.websocket is not websocket:
             with contextlib.suppress(Exception):
                 await previous.websocket.close(code=4001)
 
@@ -80,6 +93,10 @@ class RealtimeEngine:
         session = sessions[user_id]
         session.connected = False
         session.last_seen = time.time()
+
+        participants = self._room_participants.get(room_id)
+        if participants is not None:
+            participants.discard(user_id)
 
     async def touch(self, room_id: str, user_id: str) -> None:
         sessions = self._room_sessions.get(room_id)
@@ -128,17 +145,20 @@ class RealtimeEngine:
         if status is None:
             return {"type": "ERROR", "detail": "Room not found"}
 
+        config = await room_service.get_config(room_id)
         payload = {
             "type": "JOIN_ROOM_ACK",
             "room_id": room_id,
             "status": status.value,
             "ends_at": runtime["ends_at"],
+            "total_questions": await room_service.get_question_count(room_id),
             "test_ends_at": runtime["test_ends_at"],
             "current_question": runtime["current_question"],
             "user_id": user_id,
-        }
+            "participants": self.get_participants(room_id),
+            "owner_id": config.owner_id,
 
-        config = await room_service.get_config(room_id)
+        }
         if status == RoomStatus.ACTIVE and config.mode == RoomMode.QUIZ:
             question = await room_service.get_question(room_id, runtime["current_question"])
             payload["question_data"] = self._sanitize_question(question)
@@ -151,8 +171,12 @@ class RealtimeEngine:
 
         return payload
 
-    async def handle_room_state_change(self, room_id: str, status_value: str) -> dict:
+    async def handle_room_state_change(self, room_id: str, actor_user_id: str, status_value: str) -> dict:
         room_service = await get_room_service()
+        owner_id = await room_service.get_owner_id(room_id)
+        if owner_id and owner_id != actor_user_id:
+            raise ValueError("Only room admin can start or transition")
+
         new_status = await room_service.transition_status(room_id, RoomStatus(status_value))
 
         timing = {"ends_at": 0, "test_ends_at": 0, "current_question": 0}
@@ -191,6 +215,7 @@ class RealtimeEngine:
             "question_index": question_index,
             "question_data": self._sanitize_question(question),
             "ends_at": runtime["ends_at"],
+            "total_questions": await room_service.get_question_count(room_id),
         }
         await self.broadcast(room_id, event)
         return event
@@ -262,6 +287,7 @@ class RealtimeEngine:
             return {
                 "type": "SUBMIT_ACCEPTED",
                 "submitted_at": now_ms,
+                "question_index": question_index,
                 "is_correct": is_correct,
                 "score": updated_score,
             }
@@ -312,7 +338,8 @@ class RealtimeEngine:
         return {
             "type": "SUBMIT_ACCEPTED",
             "submitted_at": now_ms,
-            "is_correct": is_correct,
+            "question_index": question_index,
+                "is_correct": is_correct,
             "score": updated_score,
             "test_ends_at": user_state.test_ends_at,
             "current_section": user_state.current_section,
@@ -424,7 +451,7 @@ class RealtimeEngine:
 
         next_question = runtime["current_question"] + 1
         total_questions = await room_service.get_question_count(room_id)
-        max_questions = min(config.count, total_questions)
+        max_questions = total_questions
 
         if next_question >= max_questions:
             return await self.finalize_results(room_id)
@@ -440,6 +467,7 @@ class RealtimeEngine:
             "question_index": next_question,
             "question_data": self._sanitize_question(question),
             "ends_at": ends_at,
+            "total_questions": total_questions,
         }
         await self.broadcast(room_id, event)
         return event
@@ -463,6 +491,9 @@ class RealtimeEngine:
                 ]
                 for user_id in stale_users:
                     sessions.pop(user_id, None)
+                    participants = self._room_participants.get(room_id)
+                    if participants is not None:
+                        participants.discard(user_id)
 
                 if not sessions:
                     empty_rooms.append(room_id)
@@ -470,6 +501,7 @@ class RealtimeEngine:
             for room_id in empty_rooms:
                 self._room_sessions.pop(room_id, None)
                 self._room_submissions.pop(room_id, None)
+                self._room_participants.pop(room_id, None)
 
     async def _handle_quiz_timeouts(self, now_ms: int) -> None:
         room_service = await get_room_service()
@@ -483,6 +515,9 @@ class RealtimeEngine:
                 continue
 
             runtime = await room_service.get_runtime(room_id)
+            if self._active_session_count(room_id) <= 0:
+                continue
+
             ends_at = runtime["ends_at"]
             if ends_at <= 0:
                 continue
@@ -612,6 +647,19 @@ def get_realtime_engine() -> RealtimeEngine:
     if _engine is None:
         _engine = RealtimeEngine()
     return _engine
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

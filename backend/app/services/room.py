@@ -47,16 +47,17 @@ class RoomService:
         await self.redis.hset(
             _config_key(room_id),
             mapping={
+                "owner_id": config.owner_id,
                 "mode": config.mode.value,
                 "count": str(config.count),
                 "time_per_q": str(config.time_per_q),
                 "time_per_section": str(config.time_per_section),
+                "difficulty": config.difficulty.value,
                 "exams": json.dumps(config.exams),
                 "topics": json.dumps(config.topics),
             },
         )
 
-        # Ensure hot-state structures exist from room creation.
         await self.redis.delete(_questions_key(room_id))
         await self.redis.zadd(_leaderboard_key(room_id), {"_bootstrap": 0.0})
         await self.redis.zrem(_leaderboard_key(room_id), "_bootstrap")
@@ -111,13 +112,21 @@ class RoomService:
             raise ValueError("Room not found")
 
         return RoomConfig(
+            owner_id=data.get("owner_id", ""),
             mode=RoomMode(data["mode"]),
             count=int(data["count"]),
             time_per_q=int(data.get("time_per_q", "60")),
             time_per_section=int(data.get("time_per_section", "300")),
+            difficulty=data.get("difficulty", "medium"),
             exams=json.loads(data.get("exams", "[]")),
             topics=json.loads(data.get("topics", "[]")),
         )
+
+    async def get_owner_id(self, room_id: str) -> str:
+        data = await self.redis.hgetall(_config_key(room_id))
+        if not data:
+            raise ValueError("Room not found")
+        return str(data.get("owner_id", ""))
 
     async def get_runtime(self, room_id: str) -> dict[str, int]:
         data = await self.redis.hgetall(_runtime_key(room_id))

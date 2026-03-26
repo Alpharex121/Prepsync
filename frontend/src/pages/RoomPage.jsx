@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useAuth } from "../context/AuthContext";
 import { API_BASE_URL, request } from "../lib/api";
-import { patchRoom, resetSessionViews } from "../store/roomSlice";
+import { addParticipant, patchRoom, resetSessionViews, setParticipants } from "../store/roomSlice";
 
 function toWsUrl(apiBase, roomId, userId) {
   const url = new URL(apiBase);
@@ -25,6 +26,8 @@ function formatSeconds(ms) {
 
 export default function RoomPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { roomId: routeRoomId } = useParams();
   const dispatch = useDispatch();
   const room = useSelector((state) => state.room);
 
@@ -33,6 +36,7 @@ export default function RoomPage() {
     count,
     timePerQ,
     timePerSection,
+    difficulty,
     topics,
     exams,
     roomIdInput,
@@ -42,15 +46,16 @@ export default function RoomPage() {
     info,
     isBusy,
     connectionState,
+    ownerId,
     participants,
     endsAt,
     testEndsAt,
     countdown,
+    totalQuizQuestions,
     quizQuestionIndex,
     quizQuestion,
     selectedOption,
     submitted,
-    leaderboard,
     finalResults,
     sectionIndex,
     sectionTopic,
@@ -65,6 +70,8 @@ export default function RoomPage() {
   const reconnectAttemptsRef = useRef(0);
   const pendingAttemptRef = useRef(null);
   const quizQuestionStartRef = useRef(0);
+  const currentQuizQuestionIndexRef = useRef(-1);
+  const quizSubmitInFlightRef = useRef(false);
   const testQuestionStartRef = useRef({});
 
   function updateRoom(patch) {
@@ -72,12 +79,17 @@ export default function RoomPage() {
   }
 
   useEffect(() => {
+    if (roomStatus === "FINISHED") {
+      updateRoom({ countdown: 0 });
+      return undefined;
+    }
+
     const timer = setInterval(() => {
       const target = mode === "QUIZ" ? endsAt : testEndsAt;
       updateRoom({ countdown: Math.max(0, target - Date.now()) });
     }, 250);
     return () => clearInterval(timer);
-  }, [endsAt, mode, testEndsAt]);
+  }, [endsAt, mode, roomStatus, testEndsAt]);
 
   useEffect(() => {
     return () => {
@@ -93,6 +105,64 @@ export default function RoomPage() {
   useEffect(() => {
     updateRoom({ selectedOption: -1 });
   }, [activeTestQuestionIndex]);
+
+
+  useEffect(() => {
+    if (!user?.username) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function syncRoomRoute() {
+      const ongoing = await request(`/rooms/current?user_id=${encodeURIComponent(user.username)}`);
+      if (cancelled) {
+        return;
+      }
+
+      if (ongoing?.has_ongoing && ongoing.room_id) {
+        if (routeRoomId !== ongoing.room_id) {
+          navigate(`/room/${ongoing.room_id}`, { replace: true });
+          return;
+        }
+
+        if (roomId !== ongoing.room_id) {
+          updateRoom({ roomId: ongoing.room_id, roomIdInput: ongoing.room_id, roomStatus: ongoing.status ?? roomStatus });
+          connectSocket(ongoing.room_id);
+        }
+        return;
+      }
+
+      if (!routeRoomId) {
+        updateRoom({ roomId: "", roomIdInput: "", roomStatus: "IDLE", ownerId: "", participants: [], info: "", error: "" });
+        return;
+      }
+
+      const check = await request(`/rooms/${routeRoomId}/join-check?user_id=${encodeURIComponent(user.username)}`);
+      if (cancelled) {
+        return;
+      }
+
+      if (!check.can_join) {
+        updateRoom({ error: `Quiz already started or closed (status: ${check.status}).`, roomStatus: check.status, roomId: "" });
+        navigate("/room", { replace: true });
+        return;
+      }
+
+      updateRoom({ roomId: routeRoomId, roomIdInput: routeRoomId, roomStatus: check.status, ownerId: "", participants: [], error: "" });
+      connectSocket(routeRoomId);
+    }
+
+    syncRoomRoute().catch(() => {
+      if (!cancelled) {
+        updateRoom({ error: "Unable to resolve current room" });
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [routeRoomId, user?.username]);
 
   function parseCsv(value) {
     return value
@@ -127,7 +197,7 @@ export default function RoomPage() {
     dispatch(resetSessionViews());
 
     try {
-      const response = await request("/rooms/create", {
+      const response = await request(`/rooms/create?user_id=${encodeURIComponent(user.username)}`, {
         method: "POST",
         body: JSON.stringify({
           config: {
@@ -136,6 +206,7 @@ export default function RoomPage() {
             ...(mode === "QUIZ"
               ? { time_per_q: Number(timePerQ) }
               : { time_per_section: Number(timePerSection) }),
+            difficulty,
             topics: parseCsv(topics),
             exams: parseCsv(exams),
           },
@@ -146,10 +217,11 @@ export default function RoomPage() {
         roomId: response.room_id,
         roomIdInput: response.room_id,
         roomStatus: response.status,
+        ownerId: user.username,
         participants: [user.username],
         info: `Room created: ${response.room_id}`,
       });
-      connectSocket(response.room_id);
+      navigate(`/room/${response.room_id}`);
     } catch (createError) {
       updateRoom({ error: createError.message });
     } finally {
@@ -161,9 +233,17 @@ export default function RoomPage() {
     updateRoom({ error: "", info: "", isBusy: true });
 
     try {
-      const response = await request(`/rooms/${roomIdInput}/join-check`);
+      const response = await request(`/rooms/${roomIdInput}/join-check?user_id=${encodeURIComponent(user.username)}`);
+      if (!response.can_join) {
+        updateRoom({
+          error: `Quiz already started or closed (status: ${response.status}).`,
+          roomStatus: response.status,
+          roomId: "",
+        });
+        return;
+      }
       updateRoom({ roomId: roomIdInput, roomStatus: response.status });
-      connectSocket(roomIdInput);
+      navigate(`/room/${roomIdInput}`);
     } catch (joinError) {
       updateRoom({ error: joinError.message });
     } finally {
@@ -204,8 +284,12 @@ export default function RoomPage() {
       }
     };
 
-    ws.onclose = () => {
+    ws.onclose = (event) => {
       updateRoom({ connectionState: "disconnected" });
+      if (event.code === 4403) {
+        updateRoom({ error: "Quiz already started. New users cannot join this room now." });
+        return;
+      }
       scheduleReconnect(targetRoomId);
     };
 
@@ -238,27 +322,33 @@ export default function RoomPage() {
     }
 
     if (payload.type === "JOIN_ROOM_ACK") {
+      const joinedQuestionIndex = payload.current_question ?? 0;
+      currentQuizQuestionIndexRef.current = joinedQuestionIndex;
+      quizSubmitInFlightRef.current = false;
+
       updateRoom({
         roomStatus: payload.status,
         endsAt: payload.ends_at ?? 0,
         testEndsAt: payload.test_ends_at ?? 0,
+        ownerId: payload.owner_id ?? ownerId,
+        totalQuizQuestions: payload.total_questions ?? totalQuizQuestions,
+        info: "",
+        error: "",
       });
+      dispatch(setParticipants(payload.participants ?? [payload.user_id].filter(Boolean)));
 
       if ((payload.test_ends_at ?? 0) > 0) {
         updateRoom({ mode: "TEST" });
-      }
-
-      if (!participants.includes(payload.user_id)) {
-        updateRoom({ participants: [...participants, payload.user_id] });
       }
 
       if (payload.question_data) {
         updateRoom({
           mode: "QUIZ",
           quizQuestion: payload.question_data,
-          quizQuestionIndex: payload.current_question ?? 0,
+          quizQuestionIndex: joinedQuestionIndex,
           selectedOption: -1,
           submitted: false,
+          error: "",
         });
         quizQuestionStartRef.current = Date.now();
       }
@@ -292,11 +382,20 @@ export default function RoomPage() {
     }
 
     if (payload.type === "ROOM_STATE_CHANGE") {
-      updateRoom({
+      const patch = {
         roomStatus: payload.status,
         endsAt: payload.ends_at ?? 0,
         testEndsAt: payload.test_ends_at ?? 0,
-      });
+      };
+      if (payload.status === "GENERATING") {
+        patch.info = "Admin is generating questions. Please wait...";
+      }
+      if (payload.status === "ACTIVE") {
+        patch.info = "";
+        patch.error = "";
+      }
+      updateRoom(patch);
+
       if ((payload.test_ends_at ?? 0) > 0) {
         updateRoom({ mode: "TEST" });
       }
@@ -307,27 +406,46 @@ export default function RoomPage() {
     }
 
     if (payload.type === "NEXT_QUESTION") {
+      const nextQuizIndex = payload.question_index ?? 0;
+      currentQuizQuestionIndexRef.current = nextQuizIndex;
+      quizSubmitInFlightRef.current = false;
+
       updateRoom({
         mode: "QUIZ",
-        quizQuestionIndex: payload.question_index ?? 0,
+        quizQuestionIndex: nextQuizIndex,
+        totalQuizQuestions: payload.total_questions ?? totalQuizQuestions,
         quizQuestion: payload.question_data ?? null,
         endsAt: payload.ends_at ?? 0,
         selectedOption: -1,
         submitted: false,
+        error: "",
+        info: "",
       });
       quizQuestionStartRef.current = Date.now();
       return;
     }
 
     if (payload.type === "USER_JOINED") {
-      if (!participants.includes(payload.user_id)) {
-        updateRoom({ participants: [...participants, payload.user_id] });
+      if (Array.isArray(payload.participants)) {
+        dispatch(setParticipants(payload.participants));
+      } else {
+        dispatch(addParticipant(payload.user_id));
+      }
+      return;
+    }
+
+    if (payload.type === "USER_LEFT") {
+      if (Array.isArray(payload.participants)) {
+        dispatch(setParticipants(payload.participants));
       }
       return;
     }
 
     if (payload.type === "SUBMIT_ACCEPTED") {
-      updateRoom({ submitted: true });
+      if (mode === "QUIZ" && payload.question_index === currentQuizQuestionIndexRef.current) {
+        updateRoom({ submitted: true });
+        quizSubmitInFlightRef.current = false;
+      }
       if (pendingAttemptRef.current) {
         persistAttempt(pendingAttemptRef.current);
         pendingAttemptRef.current = null;
@@ -337,7 +455,13 @@ export default function RoomPage() {
 
     if (payload.type === "SUBMIT_REJECTED") {
       pendingAttemptRef.current = null;
-      updateRoom({ error: payload.detail ?? "Submission rejected" });
+      quizSubmitInFlightRef.current = false;
+
+      if (mode === "QUIZ" && String(payload.detail || "").toLowerCase().includes("already submitted")) {
+        updateRoom({ submitted: true, error: payload.detail ?? "Submission rejected" });
+      } else {
+        updateRoom({ submitted: false, error: payload.detail ?? "Submission rejected" });
+      }
       return;
     }
 
@@ -356,7 +480,7 @@ export default function RoomPage() {
     }
 
     if (payload.type === "FINAL_RESULTS") {
-      updateRoom({ finalResults: payload.leaderboard ?? [], roomStatus: "FINISHED" });
+      updateRoom({ finalResults: payload.leaderboard ?? [], roomStatus: "FINISHED", endsAt: 0, testEndsAt: 0, countdown: 0, info: "" });
     }
   }
 
@@ -365,16 +489,24 @@ export default function RoomPage() {
       return;
     }
 
+    if (ownerId && ownerId !== user.username) {
+      updateRoom({ info: "Ask the room creator to start the session." });
+      return;
+    }
+
     updateRoom({ error: "", info: "", isBusy: true });
 
     try {
-      const response = await request(`/rooms/${roomId}/generate-questions`, { method: "POST" });
+      const response = await request(`/rooms/${roomId}/generate-questions?user_id=${encodeURIComponent(user.username)}`, {
+        method: "POST",
+      });
       updateRoom({
         roomStatus: response.status,
         endsAt: response.ends_at ?? 0,
         testEndsAt: response.test_ends_at ?? 0,
         mode: (response.test_ends_at ?? 0) > 0 ? "TEST" : "QUIZ",
-        info: `Generated ${response.question_count} questions.`,
+        totalQuizQuestions: response.question_count ?? 0,
+        info: "",
       });
     } catch (generationError) {
       updateRoom({ error: generationError.message });
@@ -393,7 +525,7 @@ export default function RoomPage() {
   }
 
   function submitQuizAnswer() {
-    if (selectedOption < 0 || submitted) {
+    if (selectedOption < 0 || submitted || quizSubmitInFlightRef.current) {
       return;
     }
 
@@ -404,11 +536,19 @@ export default function RoomPage() {
       time_taken_ms: Math.max(0, Date.now() - startedAt),
     };
 
-    sendSocket({
+    quizSubmitInFlightRef.current = true;
+    updateRoom({ submitted: true, error: "" });
+
+    const sent = sendSocket({
       type: "SUBMIT_ANSWER",
       question_index: quizQuestionIndex,
       selected_option: selectedOption,
     });
+
+    if (!sent) {
+      quizSubmitInFlightRef.current = false;
+      updateRoom({ submitted: false });
+    }
   }
 
   function submitTestAnswer() {
@@ -469,6 +609,13 @@ export default function RoomPage() {
                 <option value="TEST">Test</option>
               </select>
 
+              <label>Difficulty</label>
+              <select value={difficulty} onChange={(event) => updateRoom({ difficulty: event.target.value })}>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+
               <label>Questions / Topic</label>
               <input
                 type="number"
@@ -476,6 +623,36 @@ export default function RoomPage() {
                 value={count}
                 onChange={(event) => updateRoom({ count: event.target.value })}
               />
+
+              {mode === "QUIZ" ? (
+                <>
+                  <label>Time / Question (sec)</label>
+                  <input
+                    type="number"
+                    min="5"
+                    value={timePerQ}
+                    onChange={(event) => updateRoom({ timePerQ: event.target.value })}
+                  />
+                </>
+              ) : null}
+
+              {mode === "TEST" ? (
+                <>
+                  <label>Time / Section (sec)</label>
+                  <input
+                    type="number"
+                    min="30"
+                    value={timePerSection}
+                    onChange={(event) => updateRoom({ timePerSection: event.target.value })}
+                  />
+                </>
+              ) : null}
+
+              <label>Topics</label>
+              <input value={topics} onChange={(event) => updateRoom({ topics: event.target.value })} />
+
+              <label>Exams</label>
+              <input value={exams} onChange={(event) => updateRoom({ exams: event.target.value })} />
             </div>
             <button type="button" disabled={isBusy} onClick={createRoom}>
               {isBusy ? "Creating..." : "Create Room"}
@@ -499,9 +676,22 @@ export default function RoomPage() {
         <article className="panel">
           <h3>Lobby</h3>
           <p>Participants: {participants.length ? participants.join(", ") : "none yet"}</p>
-          <button type="button" disabled={isBusy} onClick={startGeneration}>
-            {isBusy ? "Generating..." : "Start Session"}
-          </button>
+          {ownerId !== user.username ? (
+            <p className="muted-text">
+              {ownerId ? "Ask the room creator to start the session." : "Syncing room admin details..."}
+            </p>
+          ) : (
+            <button type="button" disabled={isBusy} onClick={startGeneration}>
+              {isBusy ? "Generating..." : "Start Session"}
+            </button>
+          )}
+        </article>
+      ) : null}
+
+      {roomStatus === "GENERATING" ? (
+        <article className="panel">
+          <h3>Generating Questions</h3>
+          <p className="muted-text">Room admin is generating questions. Please wait...</p>
         </article>
       ) : null}
 
@@ -512,7 +702,7 @@ export default function RoomPage() {
           {quizQuestion ? (
             <>
               <p className="question-text">
-                Q{quizQuestionIndex + 1}. {quizQuestion.text}
+                Q{quizQuestionIndex + 1}/{Math.max(totalQuizQuestions, quizQuestionIndex + 1)}. {quizQuestion.text}
               </p>
               <div className="option-list">
                 {quizQuestion.options?.map((option, index) => (
@@ -619,5 +809,17 @@ export default function RoomPage() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
