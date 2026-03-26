@@ -1,0 +1,237 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.brand {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.logout-btn,
+.auth-form button,
+.link-btn,
+.panel button,
+.option-btn,
+.palette-btn {
+  border: 0;
+  border-radius: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.logout-btn,
+.auth-form button,
+.panel button {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.logout-btn:hover,
+.auth-form button:hover,
+.panel button:hover {
+  background: #1e40af;
+}
+
+.secondary-btn {
+  background: #0f172a !important;
+}
+
+.link-btn {
+  background: transparent;
+  color: #1d4ed8;
+  padding-left: 0;
+}
+
+.app-content {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.auth-card,
+.panel {
+  padding: 1.2rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.6rem;
+  background: #ffffff;
+}
+
+.auth-card {
+  max-width: 420px;
+}
+
+.auth-form,
+.form-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.auth-form input,
+.form-grid input,
+.form-grid select {
+  border: 1px solid #94a3b8;
+  border-radius: 0.45rem;
+  padding: 0.55rem 0.6rem;
+  font: inherit;
+}
+
+.error-text {
+  color: #b91c1c;
+  margin: 0.35rem 0;
+}
+
+.info-text {
+  color: #0f766e;
+  margin: 0.35rem 0;
+}
+
+.muted-text {
+  color: #64748b;
+}
+
+.room-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.status-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.question-text {
+  font-weight: 600;
+}
+
+.option-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.option-btn,
+.palette-btn {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  text-align: left;
+}
+
+.option-btn.active,
+.palette-btn.active {
+  border-color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.question-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-locks {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.chip {
+  border: 1px solid #cbd5e1;
+  border-radius: 99px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.chip.current {
+  border-color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.chip.locked {
+  border-color: #f97316;
+  background: #ffedd5;
+}
+
+.action-row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #cbd5e1;
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .app-content {
+    padding: 1rem;
+  }
+
+  .action-row {
+    flex-direction: column;
+  }
+}

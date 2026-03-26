@@ -1,0 +1,75 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  mode: "QUIZ",
+  count: 5,
+  timePerQ: 45,
+  timePerSection: 300,
+  topics: "Averages, Profit and Loss, Work and Time",
+  exams: "GATE, SSC",
+
+  roomIdInput: "",
+  roomId: "",
+  roomStatus: "IDLE",
+  error: "",
+  info: "",
+  isBusy: false,
+
+  connectionState: "disconnected",
+
+  participants: [],
+
+  endsAt: 0,
+  testEndsAt: 0,
+  countdown: 0,
+
+  quizQuestionIndex: 0,
+  quizQuestion: null,
+  selectedOption: -1,
+  submitted: false,
+
+  leaderboard: [],
+  finalResults: null,
+
+  sectionIndex: 0,
+  sectionTopic: "",
+  totalSections: 0,
+  lockedSections: [],
+  sectionQuestions: [],
+  activeTestQuestionIndex: -1,
+};
+
+function applySessionReset(state) {
+  state.quizQuestionIndex = 0;
+  state.quizQuestion = null;
+  state.selectedOption = -1;
+  state.submitted = false;
+  state.sectionIndex = 0;
+  state.sectionTopic = "";
+  state.totalSections = 0;
+  state.lockedSections = [];
+  state.sectionQuestions = [];
+  state.activeTestQuestionIndex = -1;
+  state.finalResults = null;
+  state.leaderboard = [];
+}
+
+const roomSlice = createSlice({
+  name: "room",
+  initialState,
+  reducers: {
+    patchRoom(state, action) {
+      Object.assign(state, action.payload);
+    },
+    resetSessionViews(state) {
+      applySessionReset(state);
+    },
+    resetRoomState() {
+      return { ...initialState };
+    },
+  },
+});
+
+export const { patchRoom, resetSessionViews, resetRoomState } = roomSlice.actions;
+
+export default roomSlice.reducer;
