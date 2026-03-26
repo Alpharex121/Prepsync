@@ -177,6 +177,7 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
     except WebSocketDisconnect:
         if user_id:
             await engine.disconnect(room_id, user_id)
+            await engine.maybe_advance_quiz_on_presence_change(room_id)
             await engine.broadcast(
                 room_id,
                 {
@@ -190,4 +191,5 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
     except Exception as exc:
         log_error("websocket_room", exc)
         raise
+
 

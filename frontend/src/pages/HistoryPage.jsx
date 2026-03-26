@@ -21,6 +21,7 @@ export default function HistoryPage() {
     setLoading(true);
     try {
       const params = new URLSearchParams();
+      params.set("user_id", user.username);
       if (mode) params.set("mode", mode);
       if (topic) params.set("topic", topic);
       if (exam) params.set("exam", exam);
@@ -100,6 +101,15 @@ export default function HistoryPage() {
           <p className="muted-text">
             User: {report.user_id} | Mode: {report.mode}
           </p>
+          {report.section_insights?.length ? (
+            <ul>
+              {report.section_insights.map((section) => (
+                <li key={section.topic}>
+                  {section.topic}: {section.correct}/{section.attempted} total ({(section.accuracy * 100).toFixed(1)}%)
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <div className="table-container">
             <table className="report-table">
               <thead>
@@ -140,7 +150,7 @@ export default function HistoryPage() {
           <ul>
             {analytics.section_insights.map((section) => (
               <li key={section.topic}>
-                {section.topic}: {section.correct}/{section.attempted} ({(section.accuracy * 100).toFixed(1)}%)
+                {section.topic}: {section.correct}/{section.attempted} total ({(section.accuracy * 100).toFixed(1)}%)
               </li>
             ))}
           </ul>
@@ -149,3 +159,6 @@ export default function HistoryPage() {
     </section>
   );
 }
+
+
+

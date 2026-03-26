@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -63,23 +63,35 @@ export default function RoomPage() {
     lockedSections,
     sectionQuestions,
     activeTestQuestionIndex,
+    testAnsweredQuestionIndices,
   } = room;
 
   const socketRef = useRef(null);
   const reconnectTimerRef = useRef(null);
   const reconnectAttemptsRef = useRef(0);
+  const shouldReconnectRef = useRef(false);
   const pendingAttemptRef = useRef(null);
   const quizQuestionStartRef = useRef(0);
   const currentQuizQuestionIndexRef = useRef(-1);
   const quizSubmitInFlightRef = useRef(false);
   const testQuestionStartRef = useRef({});
+  const [presenceToasts, setPresenceToasts] = useState([]);
+  const [quizAnsweredUsers, setQuizAnsweredUsers] = useState([]);
 
   function updateRoom(patch) {
     dispatch(patchRoom(patch));
   }
 
+  function pushPresenceToast(message) {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    setPresenceToasts((prev) => [...prev, { id, message }]);
+    setTimeout(() => {
+      setPresenceToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 3000);
+  }
+
   useEffect(() => {
-    if (roomStatus === "FINISHED") {
+    if (roomStatus !== "ACTIVE") {
       updateRoom({ countdown: 0 });
       return undefined;
     }
@@ -93,11 +105,14 @@ export default function RoomPage() {
 
   useEffect(() => {
     return () => {
+      shouldReconnectRef.current = false;
       if (socketRef.current) {
         socketRef.current.close();
+        socketRef.current = null;
       }
       if (reconnectTimerRef.current) {
         clearTimeout(reconnectTimerRef.current);
+        reconnectTimerRef.current = null;
       }
     };
   }, []);
@@ -105,6 +120,12 @@ export default function RoomPage() {
   useEffect(() => {
     updateRoom({ selectedOption: -1 });
   }, [activeTestQuestionIndex]);
+
+  useEffect(() => {
+    if (mode === "QUIZ") {
+      setQuizAnsweredUsers([]);
+    }
+  }, [mode, quizQuestionIndex]);
 
 
   useEffect(() => {
@@ -115,26 +136,36 @@ export default function RoomPage() {
     let cancelled = false;
 
     async function syncRoomRoute() {
-      const ongoing = await request(`/rooms/current?user_id=${encodeURIComponent(user.username)}`);
-      if (cancelled) {
-        return;
-      }
-
-      if (ongoing?.has_ongoing && ongoing.room_id) {
-        if (routeRoomId !== ongoing.room_id) {
+      if (!routeRoomId) {
+        const ongoing = await request(`/rooms/current?user_id=${encodeURIComponent(user.username)}`);
+        if (cancelled) {
+          return;
+        }
+        if (ongoing?.has_ongoing && ongoing.room_id && ongoing.status && ongoing.status !== "FINISHED") {
           navigate(`/room/${ongoing.room_id}`, { replace: true });
           return;
         }
 
-        if (roomId !== ongoing.room_id) {
-          updateRoom({ roomId: ongoing.room_id, roomIdInput: ongoing.room_id, roomStatus: ongoing.status ?? roomStatus });
-          connectSocket(ongoing.room_id);
+        shouldReconnectRef.current = false;
+        if (socketRef.current) {
+          socketRef.current.close();
+          socketRef.current = null;
         }
-        return;
-      }
-
-      if (!routeRoomId) {
-        updateRoom({ roomId: "", roomIdInput: "", roomStatus: "IDLE", ownerId: "", participants: [], info: "", error: "" });
+        if (reconnectTimerRef.current) {
+          clearTimeout(reconnectTimerRef.current);
+          reconnectTimerRef.current = null;
+        }
+        reconnectAttemptsRef.current = 0;
+        updateRoom({
+          roomId: "",
+          roomIdInput: "",
+          roomStatus: "IDLE",
+          ownerId: "",
+          participants: [],
+          connectionState: "disconnected",
+          info: "",
+          error: "",
+        });
         return;
       }
 
@@ -144,15 +175,25 @@ export default function RoomPage() {
       }
 
       if (!check.can_join) {
-        updateRoom({ error: `Quiz already started or closed (status: ${check.status}).`, roomStatus: check.status, roomId: "" });
+        updateRoom({
+          error: `Quiz already started or closed (status: ${check.status}).`,
+          roomStatus: check.status,
+          roomId: "",
+        });
         navigate("/room", { replace: true });
         return;
       }
 
-      updateRoom({ roomId: routeRoomId, roomIdInput: routeRoomId, roomStatus: check.status, ownerId: "", participants: [], error: "" });
+      updateRoom({
+        roomId: routeRoomId,
+        roomIdInput: routeRoomId,
+        roomStatus: check.status,
+        ownerId: "",
+        participants: [],
+        error: "",
+      });
       connectSocket(routeRoomId);
     }
-
     syncRoomRoute().catch(() => {
       if (!cancelled) {
         updateRoom({ error: "Unable to resolve current room" });
@@ -256,6 +297,7 @@ export default function RoomPage() {
       return;
     }
 
+    shouldReconnectRef.current = true;
     if (socketRef.current) {
       socketRef.current.close();
     }
@@ -290,6 +332,9 @@ export default function RoomPage() {
         updateRoom({ error: "Quiz already started. New users cannot join this room now." });
         return;
       }
+      if (!shouldReconnectRef.current) {
+        return;
+      }
       scheduleReconnect(targetRoomId);
     };
 
@@ -302,6 +347,9 @@ export default function RoomPage() {
     if (!targetRoomId) {
       return;
     }
+    if (!shouldReconnectRef.current) {
+      return;
+    }
     if (reconnectAttemptsRef.current >= 5) {
       updateRoom({ error: "Realtime connection lost. Please reconnect manually." });
       return;
@@ -311,6 +359,9 @@ export default function RoomPage() {
     updateRoom({ connectionState: "reconnecting" });
 
     reconnectTimerRef.current = setTimeout(() => {
+      if (!shouldReconnectRef.current) {
+        return;
+      }
       connectSocket(targetRoomId);
     }, 1000 * reconnectAttemptsRef.current);
   }
@@ -366,6 +417,7 @@ export default function RoomPage() {
         sectionQuestions: payload.questions ?? [],
         testEndsAt: payload.test_ends_at ?? 0,
         info: `Section ${payload.section_index + 1} started: ${payload.section_topic}`,
+        testAnsweredQuestionIndices: [],
       });
       const firstQuestion = (payload.questions ?? [])[0];
       updateRoom({ activeTestQuestionIndex: firstQuestion?.question_index ?? -1 });
@@ -402,6 +454,9 @@ export default function RoomPage() {
       if ((payload.ends_at ?? 0) > 0) {
         updateRoom({ mode: "QUIZ" });
       }
+      if (payload.status !== "ACTIVE") {
+        setQuizAnsweredUsers([]);
+      }
       return;
     }
 
@@ -422,6 +477,7 @@ export default function RoomPage() {
         info: "",
       });
       quizQuestionStartRef.current = Date.now();
+      setQuizAnsweredUsers([]);
       return;
     }
 
@@ -431,12 +487,25 @@ export default function RoomPage() {
       } else {
         dispatch(addParticipant(payload.user_id));
       }
+      if (payload.user_id && payload.user_id !== user.username) {
+        pushPresenceToast(`${payload.user_id} joined the room`);
+      }
       return;
     }
 
     if (payload.type === "USER_LEFT") {
       if (Array.isArray(payload.participants)) {
         dispatch(setParticipants(payload.participants));
+      }
+      if (payload.user_id && payload.user_id !== user.username) {
+        pushPresenceToast(`${payload.user_id} left the room`);
+      }
+      return;
+    }
+
+    if (payload.type === "SUBMIT_ANSWER_ACK") {
+      if (mode === "QUIZ" && payload.question_index === currentQuizQuestionIndexRef.current && payload.user_id) {
+        setQuizAnsweredUsers((prev) => (prev.includes(payload.user_id) ? prev : [...prev, payload.user_id]));
       }
       return;
     }
@@ -445,6 +514,15 @@ export default function RoomPage() {
       if (mode === "QUIZ" && payload.question_index === currentQuizQuestionIndexRef.current) {
         updateRoom({ submitted: true });
         quizSubmitInFlightRef.current = false;
+      }
+      if (mode === "TEST") {
+        const questionIndex = payload.question_index;
+        if (typeof questionIndex === "number") {
+          const nextAnswered = testAnsweredQuestionIndices.includes(questionIndex)
+            ? testAnsweredQuestionIndices
+            : [...testAnsweredQuestionIndices, questionIndex];
+          updateRoom({ testAnsweredQuestionIndices: nextAnswered });
+        }
       }
       if (pendingAttemptRef.current) {
         persistAttempt(pendingAttemptRef.current);
@@ -747,14 +825,14 @@ export default function RoomPage() {
           {sectionQuestions.length === 0 ? <p className="muted-text">Waiting for section questions...</p> : null}
 
           <div className="question-palette">
-            {sectionQuestions.map((question) => (
+            {sectionQuestions.map((question, idx) => (
               <button
                 key={question.question_index}
                 type="button"
-                className={activeTestQuestionIndex === question.question_index ? "palette-btn active" : "palette-btn"}
+                className={testAnsweredQuestionIndices.includes(question.question_index) ? "palette-btn answered" : activeTestQuestionIndex === question.question_index ? "palette-btn active" : "palette-btn"}
                 onClick={() => navigateToTestQuestion(question.question_index)}
               >
-                Q{question.question_index + 1}
+                Q{idx + 1}
               </button>
             ))}
           </div>
@@ -762,7 +840,7 @@ export default function RoomPage() {
           {activeTestQuestion ? (
             <>
               <p className="question-text">
-                Q{activeTestQuestion.question_index + 1}. {activeTestQuestion.text}
+                Q{Math.max(1, sectionQuestions.findIndex((question) => question.question_index === activeTestQuestion.question_index) + 1)}. {activeTestQuestion.text}
               </p>
               <div className="option-list">
                 {activeTestQuestion.options?.map((option, index) => (
@@ -771,13 +849,18 @@ export default function RoomPage() {
                     key={`${option}-${index}`}
                     className={selectedOption === index ? "option-btn active" : "option-btn"}
                     onClick={() => updateRoom({ selectedOption: index })}
+                    disabled={testAnsweredQuestionIndices.includes(activeTestQuestionIndex)}
                   >
                     {String.fromCharCode(65 + index)}. {option}
                   </button>
                 ))}
               </div>
               <div className="action-row">
-                <button type="button" disabled={selectedOption < 0} onClick={submitTestAnswer}>
+                <button
+                  type="button"
+                  disabled={selectedOption < 0 || testAnsweredQuestionIndices.includes(activeTestQuestionIndex)}
+                  onClick={submitTestAnswer}
+                >
                   Save Answer
                 </button>
                 <button type="button" className="secondary-btn" onClick={submitSection}>
@@ -787,6 +870,29 @@ export default function RoomPage() {
             </>
           ) : null}
         </article>
+      ) : null}
+
+      {roomId ? (
+        <aside className="realtime-sidebar">
+          <h3>Participants ({participants.length})</h3>
+          <ul className="participant-list">
+            {participants.map((participant) => {
+              const answered = mode === "QUIZ" && roomStatus === "ACTIVE" && quizAnsweredUsers.includes(participant);
+              return (
+                <li key={participant} className="participant-item">
+                  <span className={answered ? "answer-dot answered" : "answer-dot"} />
+                  <span>{participant}</span>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="presence-toast-stack">
+            {presenceToasts.map((toast) => (
+              <div key={toast.id} className="presence-toast">{toast.message}</div>
+            ))}
+          </div>
+        </aside>
       ) : null}
 
       {roomStatus === "FINISHED" ? (
@@ -809,6 +915,31 @@ export default function RoomPage() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

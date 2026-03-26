@@ -13,13 +13,14 @@ router = APIRouter(prefix="/history", tags=["history"])
 
 @router.get("", response_model=list[HistoryListItem])
 async def list_history(
+    user_id: str = Query(...),
     mode: str | None = Query(default=None),
     date_from: str | None = Query(default=None),
     date_to: str | None = Query(default=None),
     topic: str | None = Query(default=None),
     exam: str | None = Query(default=None),
 ) -> list[HistoryListItem]:
-    return history_service.list_history(mode=mode, date_from=date_from, date_to=date_to, topic=topic, exam=exam)
+    return history_service.list_history(user_id=user_id, mode=mode, date_from=date_from, date_to=date_to, topic=topic, exam=exam)
 
 
 @router.post("/attempt")
@@ -50,3 +51,4 @@ async def get_analytics(room_id: str) -> RoomAnalytics:
     if analytics is None:
         raise HTTPException(status_code=404, detail="Analytics not found")
     return analytics
+

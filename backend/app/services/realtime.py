@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from fastapi import WebSocket
 
 from app.schemas.room import RoomMode, RoomStatus
+from app.services.history import history_service
 from app.services.room import get_room_service
 
 SUBMISSION_GRACE_MS = 2000
@@ -98,6 +99,20 @@ class RealtimeEngine:
         if participants is not None:
             participants.discard(user_id)
 
+    async def maybe_advance_quiz_on_presence_change(self, room_id: str) -> None:
+        room_service = await get_room_service()
+        status = await room_service.get_status(room_id)
+        if status != RoomStatus.ACTIVE:
+            return
+
+        config = await room_service.get_config(room_id)
+        if config.mode != RoomMode.QUIZ:
+            return
+
+        submissions = self._room_submissions.setdefault(room_id, set())
+        active_count = self._active_session_count(room_id)
+        if active_count > 0 and len(submissions) >= active_count:
+            await self._advance_quiz_question(room_id)
     async def touch(self, room_id: str, user_id: str) -> None:
         sessions = self._room_sessions.get(room_id)
         if not sessions:
@@ -434,6 +449,16 @@ class RealtimeEngine:
             await room_service.transition_status(room_id, RoomStatus.FINISHED)
 
         leaderboard = await room_service.get_leaderboard(room_id)
+        score_map = {str(item.get("user_id", "")): float(item.get("score", 0.0)) for item in leaderboard}
+        known_users = set(score_map.keys())
+        known_users.update(self._room_participants.get(room_id, set()))
+        known_users.update(self._room_sessions.get(room_id, {}).keys())
+        persisted_rows = [
+            {"user_id": user_id, "score": score_map.get(user_id, 0.0)}
+            for user_id in sorted(user_id for user_id in known_users if user_id)
+        ]
+        history_service.persist_user_results(room_id, persisted_rows)
+
         event = {"type": "FINAL_RESULTS", "room_id": room_id, "leaderboard": leaderboard}
         await self.broadcast(room_id, event)
 
@@ -581,10 +606,10 @@ class RealtimeEngine:
         for topic in ordered_topics:
             topic_key = topic.strip()
             if topic_key in topic_to_indices:
-                sections.append({"topic": topic_key, "question_indices": topic_to_indices.pop(topic_key)})
+                sections.append({"topic": topic_key, "question_indices": sorted(topic_to_indices.pop(topic_key))})
 
         for topic, indices in topic_to_indices.items():
-            sections.append({"topic": topic, "question_indices": indices})
+            sections.append({"topic": topic, "question_indices": sorted(indices)})
 
         self._test_room_sections[room_id] = sections
 
@@ -647,6 +672,9 @@ def get_realtime_engine() -> RealtimeEngine:
     if _engine is None:
         _engine = RealtimeEngine()
     return _engine
+
+
+
 
 
 
