@@ -283,6 +283,13 @@ class RealtimeEngine:
                 )
 
             submissions.add(user_id)
+            history_service.record_attempt_submission(
+                room_id=room_id,
+                user_id=user_id,
+                question_index=question_index,
+                selected_option=selected_option,
+                time_taken_ms=0,
+            )
 
             await self.broadcast(
                 room_id,
@@ -338,6 +345,13 @@ class RealtimeEngine:
             updated_score = await room_service.increment_score(room_id, user_id, CORRECT_ANSWER_POINTS)
 
         user_state.answers[question_index] = selected_option
+        history_service.record_attempt_submission(
+            room_id=room_id,
+            user_id=user_id,
+            question_index=question_index,
+            selected_option=selected_option,
+            time_taken_ms=0,
+        )
 
         await self.broadcast(
             room_id,
@@ -453,13 +467,14 @@ class RealtimeEngine:
         known_users = set(score_map.keys())
         known_users.update(self._room_participants.get(room_id, set()))
         known_users.update(self._room_sessions.get(room_id, {}).keys())
-        persisted_rows = [
-            {"user_id": user_id, "score": score_map.get(user_id, 0.0)}
-            for user_id in sorted(user_id for user_id in known_users if user_id)
-        ]
-        history_service.persist_user_results(room_id, persisted_rows)
 
-        event = {"type": "FINAL_RESULTS", "room_id": room_id, "leaderboard": leaderboard}
+        full_leaderboard = [
+            {"user_id": user_id, "score": score_map.get(user_id, 0.0)}
+            for user_id in sorted((uid for uid in known_users if uid), key=lambda uid: (-score_map.get(uid, 0.0), uid))
+        ]
+        history_service.persist_user_results(room_id, full_leaderboard)
+
+        event = {"type": "FINAL_RESULTS", "room_id": room_id, "leaderboard": full_leaderboard}
         await self.broadcast(room_id, event)
 
         self._room_finalized.add(room_id)
@@ -672,6 +687,8 @@ def get_realtime_engine() -> RealtimeEngine:
     if _engine is None:
         _engine = RealtimeEngine()
     return _engine
+
+
 
 
 

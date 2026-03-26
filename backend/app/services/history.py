@@ -299,6 +299,7 @@ class HistoryService:
         exam: str | None,
     ) -> list[HistoryListItem]:
         sessions: list[dict] = []
+        normalized_user_id = user_id.strip().lower()
 
         try:
             with psycopg.connect(settings.postgres_url) as connection:
@@ -311,19 +312,19 @@ class HistoryService:
                         LEFT JOIN (
                             SELECT DISTINCT room_id
                             FROM quiz_attempt_history
-                            WHERE user_id = %s
+                            WHERE lower(trim(user_id)) = %s
                         ) ua ON ua.room_id = qh.room_id
                         LEFT JOIN (
                             SELECT DISTINCT room_id
                             FROM quiz_user_results
-                            WHERE user_id = %s
+                            WHERE lower(trim(user_id)) = %s
                         ) ur ON ur.room_id = qh.room_id
                         WHERE ua.room_id IS NOT NULL
                            OR ur.room_id IS NOT NULL
-                           OR COALESCE(qh.config_params->>'owner_id', '') = %s
+                           OR lower(trim(COALESCE(qh.config_params->>'owner_id', ''))) = %s
                         ORDER BY qh.created_at DESC
                         """,
-                        (user_id, user_id, user_id),
+                        (normalized_user_id, normalized_user_id, normalized_user_id),
                     )
                     for room_id, mode_val, config_params, created_at in cursor.fetchall():
                         sessions.append(
@@ -338,26 +339,45 @@ class HistoryService:
             user_room_ids = {
                 item["room_id"]
                 for item in self._attempts
-                if item.get("user_id") == user_id
+                if str(item.get("user_id", "")).strip().lower() == normalized_user_id
             }
             user_room_ids.update({
                 item["room_id"]
                 for item in self._user_results
-                if item.get("user_id") == user_id
+                if str(item.get("user_id", "")).strip().lower() == normalized_user_id
             })
             sessions = [
                 session
                 for session in self._sessions.values()
                 if session.get("room_id") in user_room_ids
-                or str(session.get("config", {}).get("owner_id", "")) == user_id
+                or str(session.get("config", {}).get("owner_id", "")).strip().lower() == normalized_user_id
             ]
 
+        # Always merge in-memory fallback so history still appears if DB writes were partially missed.
+        user_room_ids = {
+            item["room_id"]
+            for item in self._attempts
+            if str(item.get("user_id", "")).strip().lower() == normalized_user_id
+        }
+        user_room_ids.update({
+            item["room_id"]
+            for item in self._user_results
+            if str(item.get("user_id", "")).strip().lower() == normalized_user_id
+        })
+
+        merged_sessions: dict[str, dict] = {str(session.get("room_id", "")): session for session in sessions if session.get("room_id")}
+        for session in self._sessions.values():
+            room_id = str(session.get("room_id", ""))
+            owner_id = str(session.get("config", {}).get("owner_id", "")).strip().lower()
+            if room_id and (room_id in user_room_ids or owner_id == normalized_user_id):
+                merged_sessions.setdefault(room_id, session)
+
         items: list[HistoryListItem] = []
-        for session in sessions:
-            if mode and session["mode"].upper() != mode.upper():
+        for session in merged_sessions.values():
+            if mode and str(session["mode"]).upper() != mode.upper():
                 continue
 
-            created = session["created_at"]
+            created = str(session["created_at"])
             if date_from and created < date_from:
                 continue
             if date_to and created > date_to:
@@ -372,8 +392,8 @@ class HistoryService:
 
             items.append(
                 HistoryListItem(
-                    room_id=session["room_id"],
-                    mode=session["mode"],
+                    room_id=str(session["room_id"]),
+                    mode=str(session["mode"]),
                     topics=topics,
                     exams=exams,
                     created_at=created,
@@ -482,6 +502,8 @@ class HistoryService:
 
 
 history_service = HistoryService()
+
+
 
 
 
