@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -241,6 +241,27 @@ export default function RoomPage() {
   }
 
   async function createRoom() {
+    const topicsList = parseCsv(topics);
+    const examsList = parseCsv(exams);
+    const countValue = Number(count);
+    const quizTimeValue = Number(timePerQ);
+    const sectionTimeValue = Number(timePerSection);
+
+    if (!mode || !difficulty || !Number.isFinite(countValue) || countValue < 1 || topicsList.length === 0 || examsList.length === 0) {
+      updateRoom({ error: "Select mode/difficulty and fill count, topics, and exams before creating a room." });
+      return;
+    }
+
+    if (mode === "QUIZ" && (!Number.isFinite(quizTimeValue) || quizTimeValue < 5)) {
+      updateRoom({ error: "Enter valid time per question (minimum 5 seconds)." });
+      return;
+    }
+
+    if (mode === "TEST" && (!Number.isFinite(sectionTimeValue) || sectionTimeValue < 30)) {
+      updateRoom({ error: "Enter valid time per section (minimum 30 seconds)." });
+      return;
+    }
+
     updateRoom({ error: "", info: "", isBusy: true });
     dispatch(resetSessionViews());
 
@@ -250,13 +271,13 @@ export default function RoomPage() {
         body: JSON.stringify({
           config: {
             mode,
-            count: Number(count),
+            count: countValue,
             ...(mode === "QUIZ"
-              ? { time_per_q: Number(timePerQ) }
-              : { time_per_section: Number(timePerSection) }),
+              ? { time_per_q: quizTimeValue }
+              : { time_per_section: sectionTimeValue }),
             difficulty,
-            topics: parseCsv(topics),
-            exams: parseCsv(exams),
+            topics: topicsList,
+            exams: examsList,
           },
         }),
       });
@@ -267,7 +288,7 @@ export default function RoomPage() {
         roomStatus: response.status,
         ownerId: user.username,
         participants: [user.username],
-        info: `Room created: ${response.room_id}`,
+        info: `Room created: ${response.room_id}`
       });
       navigate(`/room/${response.room_id}`);
     } catch (createError) {
@@ -514,7 +535,11 @@ export default function RoomPage() {
     }
 
     if (payload.type === "SUBMIT_ANSWER_ACK") {
-      if (mode === "QUIZ" && payload.question_index === currentQuizQuestionIndexRef.current && payload.user_id) {
+      if (
+        typeof payload.question_index === "number" &&
+        payload.question_index === currentQuizQuestionIndexRef.current &&
+        payload.user_id
+      ) {
         setQuizAnsweredUsers((prev) => (prev.includes(payload.user_id) ? prev : [...prev, payload.user_id]));
       }
       return;
@@ -700,6 +725,17 @@ export default function RoomPage() {
 
   const hasVotedToEnd = Boolean(endVote?.yesVoters?.includes(user?.username));
 
+
+  const createRoomDisabled =
+    isBusy ||
+    !mode ||
+    !difficulty ||
+    !count ||
+    !topics.trim() ||
+    !exams.trim() ||
+    (mode === "QUIZ" && !timePerQ) ||
+    (mode === "TEST" && !timePerSection);
+
   const activeTestQuestion = useMemo(
     () => sectionQuestions.find((question) => question.question_index === activeTestQuestionIndex) ?? null,
     [sectionQuestions, activeTestQuestionIndex],
@@ -748,12 +784,14 @@ export default function RoomPage() {
               <div className="form-grid">
                 <label>Mode</label>
                 <select value={mode} onChange={(event) => updateRoom({ mode: event.target.value })}>
+                  <option value="" disabled>Select mode</option>
                   <option value="QUIZ">Quiz</option>
                   <option value="TEST">Test</option>
                 </select>
 
                 <label>Difficulty</label>
                 <select value={difficulty} onChange={(event) => updateRoom({ difficulty: event.target.value })}>
+                  <option value="" disabled>Select difficulty</option>
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
                   <option value="hard">Hard</option>
@@ -764,6 +802,7 @@ export default function RoomPage() {
                   type="number"
                   min="1"
                   value={count}
+                  placeholder="e.g. 5"
                   onChange={(event) => updateRoom({ count: event.target.value })}
                 />
 
@@ -774,6 +813,7 @@ export default function RoomPage() {
                       type="number"
                       min="5"
                       value={timePerQ}
+                      placeholder="e.g. 45"
                       onChange={(event) => updateRoom({ timePerQ: event.target.value })}
                     />
                   </>
@@ -786,6 +826,7 @@ export default function RoomPage() {
                       type="number"
                       min="30"
                       value={timePerSection}
+                      placeholder="e.g. 300"
                       onChange={(event) => updateRoom({ timePerSection: event.target.value })}
                     />
                   </>
@@ -805,7 +846,7 @@ export default function RoomPage() {
                   placeholder="GATE, SSC"
                 />
               </div>
-              <button type="button" disabled={isBusy} onClick={createRoom} style={{marginTop: '1.25rem', width: '100%'}}>
+              <button type="button" disabled={createRoomDisabled} onClick={createRoom} style={{marginTop: '1.25rem', width: '100%'}}>
                 {isBusy ? "Creating..." : "Create Room"}
               </button>
             </article>
@@ -814,7 +855,7 @@ export default function RoomPage() {
               <h3>Join Existing Room</h3>
               <div className="form-grid">
                 <label>Room ID</label>
-                <input value={roomIdInput} onChange={(event) => updateRoom({ roomIdInput: event.target.value })} />
+                <input value={roomIdInput} onChange={(event) => updateRoom({ roomIdInput: event.target.value })} placeholder="e.g. ab12cd34ef" />
               </div>
               <button type="button" disabled={isBusy || !roomIdInput} onClick={joinRoom} style={{marginTop: '1.25rem', width: '100%'}}>
                 Join Room
@@ -1011,6 +1052,13 @@ export default function RoomPage() {
     </section>
   );
 }
+
+
+
+
+
+
+
 
 
 

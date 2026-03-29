@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-03-29T11:09:45.758234+00:00",
+  "user_id": "Arpit",
+  "payload": {
+    "config": {
+      "owner_id": "",
+      "mode": "TEST",
+      "count": 1,
+      "time_per_q": 60,
+      "time_per_section": 200,
+      "difficulty": "medium",
+      "exams": [
+        "Gate",
+        "tcs"
+      ],
+      "topics": [
+        "Averages",
+        "Mixture allegation"
+      ]
+    }
+  }
+}

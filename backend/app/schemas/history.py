@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+﻿from pydantic import BaseModel
 
 
 class HistoryListItem(BaseModel):
@@ -21,6 +21,7 @@ class AttemptItem(BaseModel):
     question_index: int
     topic: str
     text: str
+    explanation: str
     selected_option: int | None
     correct_index: int
     is_correct: bool

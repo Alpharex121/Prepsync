@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
   color-scheme: dark;
@@ -357,7 +357,15 @@ button:disabled {
   box-shadow: 0 0 0 3px var(--primary-light);
   background: rgba(0, 0, 0, 0.4);
 }
+/* Ensure native dropdown menus remain readable across OS/browser themes */
+.form-grid select option {
+  color: #111827;
+  background: #ffffff;
+}
 
+.form-grid select option:disabled {
+  color: #6b7280;
+}
 .error-text {
   color: #f7a0a0;
   font-size: 0.9rem;
@@ -721,3 +729,4 @@ li {
     position: static !important;
   }
 }
+

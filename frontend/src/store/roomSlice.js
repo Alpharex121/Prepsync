@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+﻿import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  mode: "QUIZ",
-  count: 5,
-  timePerQ: 45,
-  timePerSection: 300,
-  difficulty: "medium",
-  topics: "Averages, Profit and Loss, Work and Time",
-  exams: "GATE, SSC",
+  mode: "",
+  count: "",
+  timePerQ: "",
+  timePerSection: "",
+  difficulty: "",
+  topics: "",
+  exams: "",
 
   roomIdInput: "",
   roomId: "",
@@ -101,6 +101,7 @@ const roomSlice = createSlice({
 export const { patchRoom, addParticipant, setParticipants, resetSessionViews, resetRoomState } = roomSlice.actions;
 
 export default roomSlice.reducer;
+
 
 
 

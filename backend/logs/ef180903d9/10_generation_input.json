@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-03-29T11:09:54.515974+00:00",
+  "room_id": "ef180903d9",
+  "user_id": "Arpit",
+  "config": {
+    "owner_id": "Arpit",
+    "mode": "TEST",
+    "count": 1,
+    "time_per_q": 60,
+    "time_per_section": 200,
+    "difficulty": "medium",
+    "exams": [
+      "Gate",
+      "tcs"
+    ],
+    "topics": [
+      "Averages",
+      "Mixture allegation"
+    ]
+  },
+  "generating_event": {
+    "type": "ROOM_STATE_CHANGE",
+    "status": "GENERATING",
+    "ends_at": 0,
+    "test_ends_at": 0,
+    "current_question": 0
+  }
+}

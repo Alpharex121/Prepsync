@@ -1,0 +1,18 @@
+{
+  "type": "NEXT_QUESTION",
+  "room_id": "ad24a013ee",
+  "question_index": 0,
+  "question_data": {
+    "text": "[Gate] The average of 5 consecutive integers is 20. What is the average of the squares of these integers?",
+    "options": [
+      "408",
+      "416",
+      "424",
+      "432"
+    ],
+    "difficulty": "hard",
+    "topic": "Averages"
+  },
+  "ends_at": 1774781817850,
+  "total_questions": 4
+}

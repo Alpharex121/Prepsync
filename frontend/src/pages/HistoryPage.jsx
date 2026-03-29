@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 
 import { useAuth } from "../context/AuthContext";
 import { request } from "../lib/api";
@@ -127,10 +127,11 @@ export default function HistoryPage() {
                 <tr>
                   <th>Q#</th>
                   <th>Topic</th>
+                  <th>Question</th>
                   <th>Selected</th>
                   <th>Correct</th>
                   <th>Result</th>
-                  <th>Time (ms)</th>
+                  <th>Explanation</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,10 +139,11 @@ export default function HistoryPage() {
                   <tr key={attempt.question_index}>
                     <td>{attempt.question_index + 1}</td>
                     <td>{attempt.topic}</td>
+                    <td>{attempt.text}</td>
                     <td>{attempt.selected_option ?? "-"}</td>
                     <td>{attempt.correct_index}</td>
                     <td>{attempt.is_correct ? "Correct" : "Wrong/Unanswered"}</td>
-                    <td>{attempt.time_taken_ms}</td>
+                    <td>{attempt.is_correct ? "-" : attempt.explanation || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -170,6 +172,4 @@ export default function HistoryPage() {
     </section>
   );
 }
-
-
 

@@ -1,0 +1,56 @@
+{
+  "questions": [
+    {
+      "text": "[Gate] The average of 5 consecutive integers is 20. What is the average of the squares of these integers?",
+      "options": [
+        "408",
+        "416",
+        "424",
+        "432"
+      ],
+      "correct_index": 2,
+      "explanation": "Let the integers be x, x+1, x+2, x+3, x+4. Their average is 20, so (5x + 10)/5 = 20, x = 18. The squares are 18^2, 19^2, 20^2, 21^2, 22^2. Their average is (324 + 361 + 400 + 441 + 484)/5 = 2020/5 = 404 + 16 = 420 - 4 = 416.",
+      "difficulty": "hard",
+      "topic": "Averages"
+    },
+    {
+      "text": "[Gate] A shopkeeper sells an article at a 20% profit. If he had bought the article at 20% less than the selling price, he would have earned a 50% profit. What is the selling price of the article?",
+      "options": [
+        "Rs. 300",
+        "Rs. 250",
+        "Rs. 200",
+        "Rs. 400"
+      ],
+      "correct_index": 2,
+      "explanation": "Let's assume the selling price is SP and the cost price is CP. Given that the shopkeeper sells at a 20% profit, we have SP = 1.2*CP. If he had bought at 20% less than SP, the new CP would be 0.8*SP. With this, he would have earned a 50% profit, so 1.5*(0.8*SP) = SP. Solving this, 1.2*CP = SP = 1.5*0.8*SP, which gives CP = SP/1.2 = 1.25*SP. Hence, SP = 200.",
+      "difficulty": "hard",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[tcs] The marks of four students are 159, 41, 61 and 146. What is their average mark?",
+      "options": [
+        "101.8",
+        "103",
+        "100",
+        "105"
+      ],
+      "correct_index": 0,
+      "explanation": "Average = (sum of values)/4 = 407/4 = 101.8.",
+      "difficulty": "hard",
+      "topic": "Averages"
+    },
+    {
+      "text": "[tcs] A shopkeeper buys an article for Rs. 996 and gains 30%. Find the selling price.",
+      "options": [
+        "1294",
+        "1344",
+        "1394",
+        "1245"
+      ],
+      "correct_index": 0,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 996 x 130/100 = 1294.",
+      "difficulty": "hard",
+      "topic": "Profit and Loss"
+    }
+  ]
+}

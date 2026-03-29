@@ -1,4 +1,4 @@
-import json
+﻿import json
 from collections import defaultdict
 from datetime import UTC, datetime
 
@@ -431,6 +431,7 @@ class HistoryService:
                     question_index=index,
                     topic=topic,
                     text=str(question.get("text", "")),
+                    explanation=str(question.get("explanation", "")),
                     selected_option=selected_option,
                     correct_index=int(question.get("correct_index", -1)),
                     is_correct=is_correct,
@@ -502,6 +503,9 @@ class HistoryService:
 
 
 history_service = HistoryService()
+
+
+
 
 
 

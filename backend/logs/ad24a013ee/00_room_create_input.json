@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-03-29T10:55:23.365166+00:00",
+  "user_id": "Krishna",
+  "payload": {
+    "config": {
+      "owner_id": "",
+      "mode": "QUIZ",
+      "count": 1,
+      "time_per_q": 29,
+      "time_per_section": 300,
+      "difficulty": "hard",
+      "exams": [
+        "Gate",
+        "tcs"
+      ],
+      "topics": [
+        "Averages",
+        "Profit and Loss"
+      ]
+    }
+  }
+}

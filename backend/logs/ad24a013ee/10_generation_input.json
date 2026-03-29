@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-03-29T10:55:35.334708+00:00",
+  "room_id": "ad24a013ee",
+  "user_id": "Krishna",
+  "config": {
+    "owner_id": "Krishna",
+    "mode": "QUIZ",
+    "count": 1,
+    "time_per_q": 29,
+    "time_per_section": 300,
+    "difficulty": "hard",
+    "exams": [
+      "Gate",
+      "tcs"
+    ],
+    "topics": [
+      "Averages",
+      "Profit and Loss"
+    ]
+  },
+  "generating_event": {
+    "type": "ROOM_STATE_CHANGE",
+    "status": "GENERATING",
+    "ends_at": 0,
+    "test_ends_at": 0,
+    "current_question": 0
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "NEXT_QUESTION",
+  "room_id": "131b728f60",
+  "question_index": 0,
+  "question_data": {
+    "text": "[Gate] The average of 5 consecutive integers is 20. What is the average of the largest and smallest of these integers?",
+    "options": [
+      "18",
+      "20",
+      "22",
+      "19"
+    ],
+    "difficulty": "medium",
+    "topic": "Averages"
+  },
+  "ends_at": 1774782555717,
+  "total_questions": 4
+}
