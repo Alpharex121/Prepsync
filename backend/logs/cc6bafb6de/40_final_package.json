@@ -1,0 +1,394 @@
+{
+  "questions": [
+    {
+      "text": "[GATE] The marks of four students are 77, 22, 20 and 49. What is their average mark?",
+      "options": [
+        "44",
+        "41",
+        "46",
+        "42"
+      ],
+      "correct_index": 3,
+      "explanation": "Average = (sum of values)/4 = 168/4 = 42.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper buys an article for Rs. 258 and gains 15%. Find the selling price.",
+      "options": [
+        "283",
+        "309",
+        "322",
+        "296"
+      ],
+      "correct_index": 3,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 258 x 115/100 = 296.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can finish a work in 13 days and B can finish the same work in 17 days. In how many days can they finish it together?",
+      "options": [
+        "9.37",
+        "8.37",
+        "7.37",
+        "6.37"
+      ],
+      "correct_index": 2,
+      "explanation": "Combined rate = 1/13 + 1/17; time = 1/(combined rate) = 7.37 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The marks of four students are 26, 46, 52 and 67. What is their average mark?",
+      "options": [
+        "51",
+        "46",
+        "49",
+        "47.8"
+      ],
+      "correct_index": 3,
+      "explanation": "Average = (sum of values)/4 = 191/4 = 47.8.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article for Rs. 578 and gains 20%. Find the selling price.",
+      "options": [
+        "722",
+        "664",
+        "751",
+        "693"
+      ],
+      "correct_index": 3,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 578 x 120/100 = 693.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can finish a work in 13 days and B can finish the same work in 20 days. In how many days can they finish it together?",
+      "options": [
+        "9.88",
+        "7.88",
+        "6.88",
+        "8.88"
+      ],
+      "correct_index": 1,
+      "explanation": "Combined rate = 1/13 + 1/20; time = 1/(combined rate) = 7.88 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] The marks of four students are 60, 26, 63 and 79. What is their average mark?",
+      "options": [
+        "59",
+        "56",
+        "57",
+        "61"
+      ],
+      "correct_index": 2,
+      "explanation": "Average = (sum of values)/4 = 228/4 = 57.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper buys an article for Rs. 374 and gains 12%. Find the selling price.",
+      "options": [
+        "437",
+        "456",
+        "418",
+        "400"
+      ],
+      "correct_index": 2,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 374 x 112/100 = 418.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can finish a work in 13 days and B can finish the same work in 15 days. In how many days can they finish it together?",
+      "options": [
+        "6.96",
+        "5.96",
+        "7.96",
+        "8.96"
+      ],
+      "correct_index": 0,
+      "explanation": "Combined rate = 1/13 + 1/15; time = 1/(combined rate) = 6.96 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The marks of four students are 52, 71, 26 and 54. What is their average mark?",
+      "options": [
+        "52",
+        "50.8",
+        "54",
+        "49"
+      ],
+      "correct_index": 1,
+      "explanation": "Average = (sum of values)/4 = 203/4 = 50.8.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article for Rs. 387 and gains 12%. Find the selling price.",
+      "options": [
+        "472",
+        "433",
+        "414",
+        "452"
+      ],
+      "correct_index": 1,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 387 x 112/100 = 433.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can finish a work in 14 days and B can finish the same work in 19 days. In how many days can they finish it together?",
+      "options": [
+        "9.06",
+        "10.06",
+        "8.06",
+        "7.06"
+      ],
+      "correct_index": 2,
+      "explanation": "Combined rate = 1/14 + 1/19; time = 1/(combined rate) = 8.06 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] The marks of four students are 25, 44, 68 and 26. What is their average mark?",
+      "options": [
+        "39",
+        "42",
+        "40.8",
+        "44"
+      ],
+      "correct_index": 2,
+      "explanation": "Average = (sum of values)/4 = 163/4 = 40.8.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper buys an article for Rs. 838 and gains 12%. Find the selling price.",
+      "options": [
+        "1022",
+        "896",
+        "980",
+        "938"
+      ],
+      "correct_index": 3,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 838 x 112/100 = 938.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can finish a work in 11 days and B can finish the same work in 24 days. In how many days can they finish it together?",
+      "options": [
+        "6.54",
+        "9.54",
+        "8.54",
+        "7.54"
+      ],
+      "correct_index": 3,
+      "explanation": "Combined rate = 1/11 + 1/24; time = 1/(combined rate) = 7.54 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The marks of four students are 28, 60, 28 and 21. What is their average mark?",
+      "options": [
+        "36",
+        "34.2",
+        "33",
+        "38"
+      ],
+      "correct_index": 1,
+      "explanation": "Average = (sum of values)/4 = 137/4 = 34.2.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article for Rs. 339 and gains 25%. Find the selling price.",
+      "options": [
+        "457",
+        "406",
+        "423",
+        "440"
+      ],
+      "correct_index": 2,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 339 x 125/100 = 423.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can finish a work in 13 days and B can finish the same work in 12 days. In how many days can they finish it together?",
+      "options": [
+        "5.24",
+        "8.24",
+        "6.24",
+        "7.24"
+      ],
+      "correct_index": 2,
+      "explanation": "Combined rate = 1/13 + 1/12; time = 1/(combined rate) = 6.24 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] The marks of four students are 60, 38, 75 and 64. What is their average mark?",
+      "options": [
+        "58",
+        "59.2",
+        "63",
+        "61"
+      ],
+      "correct_index": 1,
+      "explanation": "Average = (sum of values)/4 = 237/4 = 59.2.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper buys an article for Rs. 308 and gains 15%. Find the selling price.",
+      "options": [
+        "385",
+        "369",
+        "338",
+        "354"
+      ],
+      "correct_index": 3,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 308 x 115/100 = 354.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can finish a work in 18 days and B can finish the same work in 21 days. In how many days can they finish it together?",
+      "options": [
+        "9.69",
+        "10.69",
+        "8.69",
+        "11.69"
+      ],
+      "correct_index": 0,
+      "explanation": "Combined rate = 1/18 + 1/21; time = 1/(combined rate) = 9.69 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The marks of four students are 69, 62, 53 and 50. What is their average mark?",
+      "options": [
+        "60",
+        "57",
+        "58.5",
+        "62"
+      ],
+      "correct_index": 2,
+      "explanation": "Average = (sum of values)/4 = 234/4 = 58.5.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article for Rs. 394 and gains 12%. Find the selling price.",
+      "options": [
+        "421",
+        "460",
+        "441",
+        "480"
+      ],
+      "correct_index": 2,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 394 x 112/100 = 441.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can finish a work in 9 days and B can finish the same work in 14 days. In how many days can they finish it together?",
+      "options": [
+        "4.48",
+        "5.48",
+        "7.48",
+        "6.48"
+      ],
+      "correct_index": 1,
+      "explanation": "Combined rate = 1/9 + 1/14; time = 1/(combined rate) = 5.48 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] The marks of four students are 56, 44, 78 and 67. What is their average mark?",
+      "options": [
+        "65",
+        "63",
+        "60",
+        "61.2"
+      ],
+      "correct_index": 3,
+      "explanation": "Average = (sum of values)/4 = 245/4 = 61.2.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper buys an article for Rs. 515 and gains 15%. Find the selling price.",
+      "options": [
+        "566",
+        "618",
+        "643",
+        "592"
+      ],
+      "correct_index": 3,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 515 x 115/100 = 592.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can finish a work in 12 days and B can finish the same work in 17 days. In how many days can they finish it together?",
+      "options": [
+        "8.03",
+        "6.03",
+        "7.03",
+        "9.03"
+      ],
+      "correct_index": 2,
+      "explanation": "Combined rate = 1/12 + 1/17; time = 1/(combined rate) = 7.03 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The marks of four students are 80, 77, 26 and 61. What is their average mark?",
+      "options": [
+        "60",
+        "61",
+        "63",
+        "65"
+      ],
+      "correct_index": 1,
+      "explanation": "Average = (sum of values)/4 = 244/4 = 61.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article for Rs. 331 and gains 20%. Find the selling price.",
+      "options": [
+        "430",
+        "413",
+        "397",
+        "380"
+      ],
+      "correct_index": 2,
+      "explanation": "Selling price = CP x (100 + profit%)/100 = 331 x 120/100 = 397.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can finish a work in 20 days and B can finish the same work in 11 days. In how many days can they finish it together?",
+      "options": [
+        "7.1",
+        "8.1",
+        "6.1",
+        "9.1"
+      ],
+      "correct_index": 0,
+      "explanation": "Combined rate = 1/20 + 1/11; time = 1/(combined rate) = 7.1 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    }
+  ]
+}

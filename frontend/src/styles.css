@@ -557,6 +557,19 @@ li {
   box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
 }
 
+.palette-btn.answered {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: var(--success);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.palette-btn.answered.active {
+  background: var(--success);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+}
+
 .chip {
   border: 1px solid var(--border);
   border-radius: 99px;

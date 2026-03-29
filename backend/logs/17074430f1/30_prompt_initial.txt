@@ -1,0 +1,1 @@
+pairwise_generation exams=['GATE', 'SSC'] topics=['Averages', 'Profit and Loss', 'Work and Time'] count_per_pair=5 difficulty=medium

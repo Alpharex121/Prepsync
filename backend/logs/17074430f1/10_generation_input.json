@@ -1,0 +1,29 @@
+{
+  "started_at": "2026-03-29T05:34:29.884412+00:00",
+  "room_id": "17074430f1",
+  "user_id": "Arpit",
+  "config": {
+    "owner_id": "Arpit",
+    "mode": "QUIZ",
+    "count": 5,
+    "time_per_q": 45,
+    "time_per_section": 300,
+    "difficulty": "medium",
+    "exams": [
+      "GATE",
+      "SSC"
+    ],
+    "topics": [
+      "Averages",
+      "Profit and Loss",
+      "Work and Time"
+    ]
+  },
+  "generating_event": {
+    "type": "ROOM_STATE_CHANGE",
+    "status": "GENERATING",
+    "ends_at": 0,
+    "test_ends_at": 0,
+    "current_question": 0
+  }
+}

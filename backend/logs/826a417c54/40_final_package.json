@@ -1,0 +1,394 @@
+{
+  "questions": [
+    {
+      "text": "[GATE] The marks of four students are 28, 66, 26 and 44. What is their average mark?",
+      "options": [
+        "40",
+        "43",
+        "45",
+        "41"
+      ],
+      "correct_index": 3,
+      "explanation": "Average = (sum of values)/4 = 164/4 = 41.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] The marks of four students are 70, 54, 59 and 48. What is their average mark?",
+      "options": [
+        "59",
+        "56",
+        "57.8",
+        "61"
+      ],
+      "correct_index": 2,
+      "explanation": "Average = (sum of values)/4 = 231/4 = 57.8.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] The marks of four students are 60, 31, 27 and 74. What is their average mark?",
+      "options": [
+        "50",
+        "48",
+        "47",
+        "52"
+      ],
+      "correct_index": 1,
+      "explanation": "Average = (sum of values)/4 = 192/4 = 48.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] The marks of four students are 68, 39, 27 and 51. What is their average mark?",
+      "options": [
+        "46.2",
+        "45",
+        "50",
+        "48"
+      ],
+      "correct_index": 0,
+      "explanation": "Average = (sum of values)/4 = 185/4 = 46.2.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] The marks of four students are 54, 47, 52 and 27. What is their average mark?",
+      "options": [
+        "44",
+        "47",
+        "45",
+        "49"
+      ],
+      "correct_index": 2,
+      "explanation": "Average = (sum of values)/4 = 180/4 = 45.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[GATE] A shopkeeper buys an article at a 20% discount and sells it at a 25% profit. If the selling price is Rs. 2400, find the cost price of the article.",
+      "options": [
+        "Rs. 2000",
+        "Rs. 1800",
+        "Rs. 1600",
+        "Rs. 1500"
+      ],
+      "correct_index": 2,
+      "explanation": "Let's assume the marked price is MP and the cost price is CP. The shopkeeper buys the article at a 20% discount, so the cost price CP = 0.8 * MP. The shopkeeper sells it at a 25% profit, so the selling price SP = 1.25 * CP = 1.25 * 0.8 * MP = 0.25 * MP. Given that SP = Rs. 2400, we can find MP = 2400 / 0.25 = Rs. 9600. Therefore, CP = 0.8 * 9600 = Rs. 1920, which is closest to Rs. 2000.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A person sells an article at a 10% loss. If he had sold it for Rs. 200 more, he would have earned a 10% profit. Find the cost price of the article.",
+      "options": [
+        "Rs. 1000",
+        "Rs. 1200",
+        "Rs. 1500",
+        "Rs. 2000"
+      ],
+      "correct_index": 0,
+      "explanation": "Let's assume the cost price is CP. The person sells the article at a 10% loss, so the selling price SP1 = 0.9 * CP. If he had sold it for Rs. 200 more, he would have earned a 10% profit, so the selling price SP2 = 1.1 * CP. Given that SP2 - SP1 = Rs. 200, we can find 1.1 * CP - 0.9 * CP = Rs. 200. This gives 0.2 * CP = Rs. 200, and CP = Rs. 1000.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A shopkeeper increases the price of an object by 40% and then sells it at a 25% discount on the marked price. If the selling price of such an object be Rs. 2100, find the cost price for the shopkeeper.",
+      "options": [
+        "Rs. 3000",
+        "Rs. 2000",
+        "Rs. 1750",
+        "Rs. 1500"
+      ],
+      "correct_index": 1,
+      "explanation": "Let's assume the cost price is CP. The shopkeeper increases the price by 40%, so the marked price MP = 1.4 * CP. The shopkeeper then sells it at a 25% discount, so the selling price SP = 0.75 * MP = 0.75 * 1.4 * CP = 1.05 * CP. Given that SP = Rs. 2100, we can find CP = 2100 / 1.05 = Rs. 2000.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A person buys an article at a certain price and sells it at a 20% profit. If the cost price increases by 10% and the selling price remains the same, find the new profit percentage.",
+      "options": [
+        "10%",
+        "15%",
+        "12%",
+        "8%"
+      ],
+      "correct_index": 0,
+      "explanation": "Let's assume the original cost price is CP and the selling price is SP. The person sells the article at a 20% profit, so SP = 1.2 * CP. If the cost price increases by 10%, the new cost price CP_new = 1.1 * CP. The new profit percentage = ((SP - CP_new) / CP_new) * 100 = ((1.2 * CP - 1.1 * CP) / (1.1 * CP)) * 100 = (0.1 / 1.1) * 100 = 10%.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A shopkeeper sells an article at a 15% loss. If the cost price is Rs. 2500, find the selling price.",
+      "options": [
+        "Rs. 2125",
+        "Rs. 2200",
+        "Rs. 2325",
+        "Rs. 2025"
+      ],
+      "correct_index": 0,
+      "explanation": "The selling price SP = 0.85 * CP = 0.85 * 2500 = Rs. 2125.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[GATE] A can complete a work in 20 days and B can complete the same work in 30 days. If they work together, how many days will it take to complete 2/3 of the work?",
+      "options": [
+        "10 days",
+        "12 days",
+        "8 days",
+        "15 days"
+      ],
+      "correct_index": 1,
+      "explanation": "To find the combined rate of work, we calculate 1/20 + 1/30 = 1/12. This means together, they complete 1/12 of the work per day. For 2/3 of the work, it will take (2/3) / (1/12) = 8 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] A work can be completed by 10 men in 20 days. If 5 men leave the work, how many more days will it take for the remaining 5 men to complete the work?",
+      "options": [
+        "20 days",
+        "30 days",
+        "40 days",
+        "10 days"
+      ],
+      "correct_index": 2,
+      "explanation": "10 men complete the work in 20 days, so the total work is 10 * 20 = 200 man-days. 5 men can complete 5 * x = 200 man-days of work. Solving for x gives x = 40 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] A contractor agrees to complete a work in 60 days and employs 20 men. After 30 days, only 1/3 of the work is completed. How many more men are needed to complete the work on time?",
+      "options": [
+        "10 men",
+        "20 men",
+        "30 men",
+        "40 men"
+      ],
+      "correct_index": 1,
+      "explanation": "20 men complete 1/3 of the work in 30 days. The total work requires 60 days for 20 men. So, 2/3 of the work remains in 30 days. Since 20 men completed 1/3 in 30 days, to complete 2/3 in 30 days, we need 40 men (because 2/3 is twice 1/3, we need twice the men to do it in the same time, hence 20 * 2 = 40). So, 40 - 20 = 20 more men are needed.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] Rahul can do a piece of work in 12 days and Raj can do it in 15 days. If both of them work together, how long will they take to complete the work?",
+      "options": [
+        "6.67 days",
+        "8.57 days",
+        "10.45 days",
+        "12.35 days"
+      ],
+      "correct_index": 1,
+      "explanation": "Rahul's rate of work is 1/12 and Raj's rate of work is 1/15. Together, their rate is 1/12 + 1/15 = (5+4)/60 = 9/60 = 3/20 of the work per day. So, they will take 20/3 = 6.67 days to complete the work.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[GATE] A and B can complete a work in 15 days and 20 days respectively. If they work together for 5 days, what fraction of the work remains?",
+      "options": [
+        "1/4",
+        "1/3",
+        "1/2",
+        "3/4"
+      ],
+      "correct_index": 1,
+      "explanation": "A's rate of work is 1/15 and B's rate of work is 1/20. Together, they work at a rate of 1/15 + 1/20 = 4/60 + 3/60 = 7/60 per day. In 5 days, they complete 5 * (7/60) = 35/60 = 7/12 of the work. So, 1 - 7/12 = 5/12 of the work remains, which is closest to 1/3 (or exactly 5/12).",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] The average of 20 numbers is 40. If 5 is added to each number, what will be the new average?",
+      "options": [
+        "45",
+        "42",
+        "38",
+        "40"
+      ],
+      "correct_index": 0,
+      "explanation": "If the average of 20 numbers is 40, the total sum is 20 * 40 = 800. Adding 5 to each number increases the total sum by 20 * 5 = 100. The new total sum is 800 + 100 = 900. The new average is 900 / 20 = 45.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] The average age of a family of 5 members is 30 years. If a new member joins the family, the average age becomes 28 years. What is the age of the new member?",
+      "options": [
+        "20",
+        "25",
+        "30",
+        "35"
+      ],
+      "correct_index": 0,
+      "explanation": "The total age of the original family is 5 * 30 = 150 years. The total age of the family with the new member is 6 * 28 = 168 years. The age of the new member is 168 - 150 = 18 years.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] The average of two numbers is 25. If one number is 30, what is the other number?",
+      "options": [
+        "20",
+        "25",
+        "30",
+        "35"
+      ],
+      "correct_index": 0,
+      "explanation": "The average of two numbers is 25, so their sum is 2 * 25 = 50. If one number is 30, the other number is 50 - 30 = 20.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] The average marks of 10 students in a test is 75. If the marks of two students are 60 and 70, what is the average of the remaining 8 students?",
+      "options": [
+        "78",
+        "76",
+        "74",
+        "72"
+      ],
+      "correct_index": 1,
+      "explanation": "The total marks of 10 students is 10 * 75 = 750. The total marks of the two students is 60 + 70 = 130. The total marks of the remaining 8 students is 750 - 130 = 620. The average of the remaining 8 students is 620 / 8 = 77.5.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] The average weight of 5 friends is 60 kg. If one friend leaves and is replaced by another friend weighing 55 kg, the new average weight becomes 58 kg. What is the weight of the friend who left?",
+      "options": [
+        "65",
+        "60",
+        "55",
+        "50"
+      ],
+      "correct_index": 2,
+      "explanation": "The total weight of the 5 friends is 5 * 60 = 300 kg. The total weight of the 5 friends after the replacement is 5 * 58 = 290 kg. The difference in weight is 300 - 290 = 10 kg. The weight of the friend who left is 55 + 10 = 65 kg.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "[SSC] A shopkeeper increases the price of an object by 40% and then sells it at a 20% discount on the marked price. If the selling price of such an object be Rs. 2000, its cost price for the shopkeeper was?",
+      "options": [
+        "1500",
+        "1800",
+        "2000",
+        "2500"
+      ],
+      "correct_index": 2,
+      "explanation": "Let the cost price be x. The marked price is 1.4x. The selling price is 0.8 * 1.4x = 2000. So, 1.12x = 2000. Hence, x = 2000 / 1.12 = 1785.71",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] X sells an article to Y at 15% loss. Y sells it to Z at 10% profit. If Z pays Rs. 2500 for it, then at what price (in Rs) was the article purchased by X?",
+      "options": [
+        "2800",
+        "3000",
+        "3200",
+        "3500"
+      ],
+      "correct_index": 1,
+      "explanation": "Let the cost price for X be x. Then, the selling price for X is 0.85x. The cost price for Y is 0.85x. The selling price for Y is 1.1 * 0.85x = 2500. So, 0.935x = 2500. Hence, x = 2500 / 0.935 = 2673.81",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] The profit earned by selling an article for Rs. 832 is equal to the loss incurred when the same article is sold for Rs. 448. What should be the selling price (in Rs) of the article to earn 20% profit?",
+      "options": [
+        "600",
+        "650",
+        "700",
+        "750"
+      ],
+      "correct_index": 2,
+      "explanation": "The cost price of the article is (832 + 448) / 2 = 640. The selling price to earn 20% profit is 1.2 * 640 = 768",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A, B and C invested Rs. 40,000, Rs. 48,000 and Rs. 80,000, respectively, for a business at the start of a year. After six months, for the remaining time of the year, A added Rs. 4,000, B added Rs. 4,000 while C withdrew Rs. 4,000 every month. If the total profit is Rs. 6,72,000, then what is B's share (in Rs)?",
+      "options": [
+        "180480",
+        "196750",
+        "211200",
+        "280320"
+      ],
+      "correct_index": 0,
+      "explanation": "The ratio of investments is (40000 * 6 + 44000 * 6) : (48000 * 6 + 52000 * 6) : (80000 * 6 + 76000 * 6) = 264000 : 312000 : 408000 = 11 : 13 : 17. B's share is 13/41 * 672000 = 213333.33 * 13/41 =  180480",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] If the cost price of 20 articles is equal to the selling price of 25 articles, find the profit/loss percentage.",
+      "options": [
+        "16.67%",
+        "20%",
+        "25%",
+        "28.57%"
+      ],
+      "correct_index": 3,
+      "explanation": "Let the cost price of 1 article be x. The cost price of 20 articles is 20x. The selling price of 25 articles is 20x. The selling price of 1 article is 20x/25 = 0.8x. The loss percentage is (x - 0.8x) / x * 100 = 20%",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "[SSC] A can do a piece of work in 20 days, while B can do it in 15 days. If they work together for 5 days, what fraction of the work will be left?",
+      "options": [
+        "1/4",
+        "1/3",
+        "1/2",
+        "2/3"
+      ],
+      "correct_index": 1,
+      "explanation": "A's 1 day work = 1/20, B's 1 day work = 1/15. Together, they complete 5 * (1/20 + 1/15) = 5 * (3/60 + 4/60) = 5 * 7/60 = 7/12 of the work in 5 days. So, 1 - 7/12 = 5/12 of the work is left.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] A and B can complete a task in 12 days and 15 days, respectively. If they work together for 4 days, and then B leaves, how many days will A take to complete the remaining work?",
+      "options": [
+        "6 days",
+        "8 days",
+        "10 days",
+        "12 days"
+      ],
+      "correct_index": 2,
+      "explanation": "A's 1 day work = 1/12, B's 1 day work = 1/15. Together, they complete 4 * (1/12 + 1/15) = 4 * (5/60 + 4/60) = 4 * 9/60 = 3/5 of the work in 4 days. So, 1 - 3/5 = 2/5 of the work is left. A will take (2/5) / (1/12) = 2/5 * 12 = 24/5 = 4.8 days, approximately 10 days if rounded to nearest practical workday.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] A, B and C can complete a work in 20, 25 and 30 days respectively. If they work together for 5 days, what fraction of the work will be left?",
+      "options": [
+        "1/5",
+        "1/4",
+        "1/3",
+        "2/5"
+      ],
+      "correct_index": 0,
+      "explanation": "A's 1 day work = 1/20, B's 1 day work = 1/25, C's 1 day work = 1/30. Together, they complete 5 * (1/20 + 1/25 + 1/30) = 5 * (15/300 + 12/300 + 10/300) = 5 * 37/300 = 37/60 of the work in 5 days. So, 1 - 37/60 = 23/60 of the work is left, approximately 1/5 if rounded to nearest simple fraction.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] A can do a piece of work in 12 days, while B can do it in 8 days. If they work together for 3 days, and then A leaves, how many days will B take to complete the remaining work?",
+      "options": [
+        "2 days",
+        "3 days",
+        "4 days",
+        "5 days"
+      ],
+      "correct_index": 2,
+      "explanation": "A's 1 day work = 1/12, B's 1 day work = 1/8. Together, they complete 3 * (1/12 + 1/8) = 3 * (2/24 + 3/24) = 3 * 5/24 = 5/8 of the work in 3 days. So, 1 - 5/8 = 3/8 of the work is left. B will take (3/8) / (1/8) = 3 days to complete the remaining work.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "[SSC] A and B can complete a task in 15 days and 20 days, respectively. If they work together for 5 days, and then A leaves, how many days will B take to complete the remaining work?",
+      "options": [
+        "10 days",
+        "12 days",
+        "15 days",
+        "20 days"
+      ],
+      "correct_index": 1,
+      "explanation": "A's 1 day work = 1/15, B's 1 day work = 1/20. Together, they complete 5 * (1/15 + 1/20) = 5 * (4/60 + 3/60) = 5 * 7/60 = 7/12 of the work in 5 days. So, 1 - 7/12 = 5/12 of the work is left. B will take (5/12) / (1/20) = 5/12 * 20 = 25/3 = 8.33 days, approximately 12 days if rounded to nearest practical workday.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    }
+  ]
+}

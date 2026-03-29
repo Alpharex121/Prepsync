@@ -1,0 +1,18 @@
+{
+  "type": "NEXT_QUESTION",
+  "room_id": "92ecfc4a2c",
+  "question_index": 0,
+  "question_data": {
+    "text": "[GATE] The marks of four students are 69, 33, 68 and 75. What is their average mark?",
+    "options": [
+      "63",
+      "60",
+      "61.2",
+      "65"
+    ],
+    "difficulty": "medium",
+    "topic": "Averages"
+  },
+  "ends_at": 1774764202633,
+  "total_questions": 30
+}

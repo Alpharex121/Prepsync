@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     gemini_api_key: str = ""
     groq_api_key: str = ""
+    tavily_api_key: str = ""
+    question_source_mode: str = "search_hybrid"
+    search_reference_limit: int = 120
 
     postgres_host: str = "localhost"
     postgres_port: int = 5432
@@ -50,3 +53,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+

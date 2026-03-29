@@ -1,0 +1,263 @@
+[
+  {
+    "attempt": 1,
+    "prompt": "Hybrid SAG generation instructions:\nStep 1 (Gold standard): Use reference snippets as PYQ style anchors where available.\nStep 2 (Context injection): Match depth and distractor quality from references.\nStep 3 (Parameter mutation): Reuse logic pattern but mutate numbers, entities, and scenario details.\nStep 4 (Self-correction): Ensure answer index matches computed solution before finalizing each question.\n\nConstraints:\n- Exams: GATE, SSC\n- Topics: Averages, Profit and Loss, Work and Time\n- Questions per topic per exam: 1\n- Total questions required: 6\n- For EACH exam and EACH topic combination, generate exactly the specified count\n- Each question must have exactly 4 options and one correct index from 0 to 3\n- Avoid exact repeats in question text and option set\n- No placeholders or template text\n- Target difficulty level: medium\n- Adapt style by exam hints:\n  * GATE: emphasize multi-step reasoning and analytical rigor.\n  * SSC: emphasize fast-solving aptitude and practical shortcuts.\n- Prefer quantitative rigor for hard mode\n- Randomization nonce: 83459334\n\nReference material (may be empty):\n[1] title=GATE Previous Year Question Papers with Solutions PDF, PW PYQ ...\nurl=https://www.pw.live/gate/exams/gate-previous-year-question-papers\nsnippet=## GATE Previous Year Question Papers Subject Wise PDF\n\nThe Previous Year GATE Question Paper include 65 multiple-choice questions (MCQs), multiple-select questions (MSQs), and numerical answer type (NAT) questions. Each question is worth 1 or 2 marks.\n\nAccording to the GATE Exam Pattern, the General Aptitude section accounts for 15% of the total marks, the Engineering Mathematics section covers 13%, and the core subject paper accounts for the remaining 72%.\n\nThe GATE question paper for subjects\n\n[2] title=[PDF] GATE Aptitude Practice Questions Averages\nurl=https://www.iitiansgateclasses.com/Document/igc%20aptitude%20averages-assignment.pdf\nsnippet=Contact- 9740501604 GATE Aptitude Practice Questions Averages Contact- 9740501604 Contact- 9740501604 Q.No. 5 Contact- 9740501604 Contact- 9740501604 Answer Key Q.No. Ans. 1 B 2 C 3 A 4 B 5 C 6 25 7 B 8 C 9 C 10 C Contact- 9740501604 IGC Live GATE Online Class Room Coaching • Live online Classes for all subjects including mathematics and aptitude by subject experts (IIT/IISc Fellow) • Good Study Material (e-form) • Topic-wise assignments (e-form) • 80+ online Exam • Course completion at-least on\n\n[3] title=GATE EE Previous Year Question Papers with Solutions - SelfStudys\nurl=https://www.selfstudys.com/gate/electrical-engineering/online/exam/previous-year-paper-pdf\nsnippet=With the help of Previous Year Question Papers. A student can practice a maximum number of questions from the syllabus.\n\n### GATE EE PYP (2025-1997) Download Links Below\n\nGATE Electrical Engineering Previous Year Papers from year 2024 to 1997 are given in a tabular format below. Students can look at them to know more about the types of questions, time consumption, difficulty level of questions and their marks distribution.\n\nThose students who practice solving these past year questions regularly \n\n[4] title=GATE Previous Year Question Papers with Solution - Download PDFs\nurl=https://unacademy.com/content/gate/notification/previous-year-question-papers/\nsnippet=Answer: The total number of questions in the GATE question paper varies each year but typically ranges from 65 to 100 questions.\n\n### How many sections are there in the GATE question paper?\n\n### What is the format of the GATE question paper?\n\nAnswer: The GATE question paper is in a multiple-choice format, where candidates have to select the correct answer from the given options.\n\nAnswer: The official GATE website releases question papers after completing the examination. The candidates can simpl\n\n[5] title=Profit and Loss Questions With Solutions - Smartkeeda\nurl=https://www.smartkeeda.com/quantitative-aptitude/profit-and-loss-questions\nsnippet=smartkeedaJoin Testzone\n\n ABOUT US\n CONTACT US\n Get App\n help@smartkeeda.com\n\n CA Mock Drill TM)\n Descriptive Test New\n Test Series\n Quant\n Reasoning\n English Lang\n हिंदी भाषा\n GK\n CA\n Law\n\nTestzone, best Test Series for Bank, Railways and SSC exams.\n\n# Profit and Loss Questions With Solutions\n\n Quizzes\n Pdfs\n\n###### Profit n Loss Quiz 20\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 19\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 18\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 17\n\n8 Mins\n\n10 Que\n\n[6] title=Profit and Loss: Aptitude Questions & Ans - Free Practice!\nurl=https://www.learntheta.com/aptitude-questions-profit-loss-partnership/\nsnippet=###### Q. 5 Two entrepreneurs, A and B, pool their resources to start a venture. A invests ₹40,000, while B invests ₹50,000. They agree to split profits in proportion to their investments. If their business earns a total profit of ₹13,500 in the first year, how much of this profit does B take home?\n\nAns: ₹7,500\n\nInvestment ratio of A and B = 40,000 : 50,000 = 4 : 5.  \nB’s share = 5/(4+5) × 13,500 = 5/9 × 13,500 = ₹7,500.\n\n###### Q. 6 How much additional money you will save tentatively if you bou\n\n[7] title=Recent questions tagged profit-loss - GATE Overflow\nurl=https://gateoverflow.in/tag/profit-loss\nsnippet=GATE Overflow for GATE CSE\nGATE Overflow for GATE CSE\n\n# Recent questions tagged profit-loss\n\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\n\n|  |  |\n --- |\n| tags | tag:apple |\n| author | user:martin |\n| title | title:apple |\n| content | content:apple |\n| exclude | -tag:apple |\n| force match | +apple |\n| views | views:100 |\n| score | score:10 |\n| answers | answers:2 |\n| is accepted | isaccepted:true |\n| is closed | isclosed:true |\n\n##\n\n[8] title=GATE Previous Year Question Papers - Free Download PDF\nurl=https://www.geeksforgeeks.org/gate/gate-previous-year-question-paper/\nsnippet=## GATE 2018 Question Papers with Solutions PDF\n\nThe official GATE authorities have released the GATE 2018 question papers for all 24 subjects/papers on their official website, along with the answer keys. Applicants can now download the GATE 2018 Question Papers PDF by clicking on the link provided below. Going through the GATE 2018 Previous Year Question Paper will provide insights into areas from the GATE Syllabus.\n\nThere were 24 papers in the GATE 2018 Exam, in this article, all the PDFs alon\n\n[9] title=Previous Year CSE Questions for GATE, TIFR, CMI, ISI, ISRO ...\nurl=https://gateoverflow.in/previous-years\nsnippet=GATE Overflow for GATE CSE\nGATE Overflow for GATE CSE\n\n# Previous Year CSE Questions for GATE, TIFR, CMI, ISI, ISRO, NIELIT and NET.\n\n### GATE CSE\n\n### GATE DA\n\n### TIFR\n\n### DRDO\n\n### CMI\n\n### CMI DATA SCIENCE\n\n### ISI-PCB/PCA-CSE\n\n### ISI-MMA/PCB-Mathematics\n\n### ISI-DCG\n\n### ISRO\n\n### NIELIT(Scientist-B)\n\n### NIELIT (Scientific/Technical Assistant-A)\n\n### UGC NET(for Master Degree Holders)\n\n|  |  |\n --- |\n| tags | tag:apple |\n| author | user:martin |\n| title | title:apple |\n| content | conten\n\n[10] title=GATE Previous Year Question Paper with Solution, Download PDF\nurl=https://store.pw.live/blogs/gate-exams/gate-previous-year-question-paper-with-solution?srsltid=AfmBOoqd1bWnADfUkwoGxPAngy2cy7Kupa08UhIlKggBeWrHBdztF_1X\nsnippet=GATE Previous Year Question Paper with Solution, Download PD...\n\n# GATE Previous Year Question Paper with Solution, Download PDF\n\nAuthor at PW\nAugust 29, 2025\n\nimage\n\nGATE Previous Year Question Paper with Solution: The Graduate Aptitude Test in Engineering (GATE) is one of the most popular exams in India for students who want to go for higher studies in M.Tech, ME, or to secure jobs in top public sector companies. The GATE 2025 notification will be available in the first week of August 2025, an\n\n[11] title=Previous Year Average Questions For SSC CGL Mains/Tier II till date\nurl=https://nerdsjobportal.com/previous-year-average-questions-for-ssc-cgl/\nsnippet=Q10. The average weight of A, B and C is 45 kg. If the average weight of A and B be 40 kg and that of B and C be 43 kg, then the weight of B is  \n(a) 31  \n(b) 17  \n(c) 20  \n(d) 26  \n{Held on: Apr 12, 2015}\n\nAns: (a) 31\n\nExplanation:\n\nA + B + C = 135 \\_\\_\\_\\_\\_(1)  \nA + B = 80 \\_\\_\\_\\_\\_(2)  \nB + C = 86 \\_\\_\\_\\_\\_(3)\n\n(2) + (3) – (1) ⟶  \nB = 166 – 135  \n    = 31\n\nQ11. In a team of 10 persons, nine persons spent ₹40 each for their meal and the remaining one spent ₹9 more than the average expenditu\n\n[12] title=SSC CGL Tier 2 Previous Year Question Paper with Solutions from ...\nurl=https://prepp.in/ssc-cgl-exam/tier-2-previous-year-question-paper\nsnippet=| Question Paper PDF | Answer Key PDF | Detailed Solution |\n --- \n| SSC CGL 2017 Tier 2 English Question Paper and Answer Key PDF (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 Quant Question Paper and Answer Key PDF English (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 Quant Question Paper and Answer Key PDF Hindi (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 English Question Paper and Answer\n\n[13] title=SSC CGL Previous Year Question Paper with Answer ... - Testbook\nurl=https://testbook.com/ssc-cgl-exam/previous-year-papers\nsnippet=Unlock Now\n\nEnglish, Hindi\n\nLoad More Question Papers\n\n## SSC CGL 2024 Question Paper (Total Tests: 194)\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 1) 14.5k Users\n\n100 Questions\n\n200 Marks\n\n60 Mins\n\nUnlock Now\n\nEnglish, Hindi\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 2) 6.8k Users\n\n100 Questions\n\n200 Marks\n\n60 Mins\n\nUnlock Now\n\nEnglish, Hindi\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 1) 330.8k Users\n\n100 Questi\n\n[14] title=SSC CGL Previous Year Question Paper PDF with Solutions\nurl=https://www.geeksforgeeks.org/ssc-banking/ssc-cgl-previous-year-question-paper/\nsnippet=| SSC CGL Tier 2 – Paper 1 Exam Pattern  (Compulsory for all Posts) |\n\n| Sections | Subjects | No. of Questions | Marks | Time Allotted | Weightage |\n| Section 1 | Module I:Reasoning and General Intelligence | 30 | 90 | 1 hour | 23% |\n| Module I:Mathematical Abilities | 30 | 90 | 23% |\n| Section 2 | Module I:English Language and Comprehension | 45 | 135 | 1 hour | 35% |\n| Module II:General Awareness | 25 | 75 | 19% |\n| Section 3 | Module I:Computer Knowledge Test | 20 | 60 | 15 min. | Qualifying\n\n[15] title=SSC Profit and Loss Questions Solved Problems with Detailed ...\nurl=https://testbook.com/questions/ssc-profit-and-loss-questions--637ef452707bb0691cbc08c0\nsnippet=Previous Year Papers [...] Test Series [...] #### SSC Profit and Loss Questions Question 7:\n\nA shopkeeper increases the price of an object by 40% and then sells it at a 25% discount on the marked price. If the selling price of such an object be Rs. 2100, its cost price for the shopkeeper was?\n\n1. 3000\n2. 1500\n3. 1750\n4. 2000\n\n#### Answer (Detailed Solution Below)\n\nOption 4 : 2000\n\n#### SSC Profit and Loss Questions Question 7 Detailed Solution\n\n25% = 1/4 and 40% = 2/5\n\nSP of the article = Rs. 21\n\n[16] title=Appl. Sci., Volume 13, Issue 22 (November-2 2023) – 444 articles\nurl=https://www.mdpi.com/2076-3417/13/22\nsnippet=Issues are regarded as officially published after their release is announced to the table of contents alert mailing list.\n You may sign up for e-mail alerts to receive table of contents of newly released issues.\n PDF is the official format for papers published in both, html and pdf forms. To view the papers in pdf format, click on the \"PDF Full-text\" link, and use the free Adobe Reader to open them.\n\nPrevious Issue\n\nVolume 13, November-1\n\nNext Issue\n\nVolume 13, December-1\n\n## Issue View Metrics\n\n\n[17] title=ssc exam previous question for Profit & loss - Slideshare\nurl=https://www.slideshare.net/slideshow/ssc-exam-previous-question-for-profit-loss/63168954\nsnippet=# ssc exam previous question for Profit & loss\n\nThis document contains 34 multiple choice questions related to profit and loss calculations. The questions involve topics like calculating percentage profit/loss, determining original or marked prices given sale prices with discounts, and identifying costs given profits. Answers to the questions are also provided. [...] ## ssc exam previous question for Profit & loss [...] price is Rs. 40 morel tneib witt be,:r gain of 15%. ihe (A) 20 (B) 25 (C)44 \n\n[18] title=SSC CGL 2026 Time and Work Questions With Solutions & Tricks\nurl=https://www.pw.live/ssc/exams/ssc-cgl-time-and-work-questions\nsnippet=(a) 6\n\n(b) 10\n\n(c) 8\n\n(d) 12\n\n(b) 10\n\nA alone can do a piece of work in 6 days, and B alone in 8 days. A and B undertook to do it for Rs. 3200. With the help of C, they finished in 3 days. How much is to be paid to C?\n\n(a) 375\n\n(b) 400\n\n(c) 600\n\n(d) 800\n\n(b) 400\n\nA, B & C can do a piece of work in 15, 20 & 30 days, respectively. If they work on alternate days, in how many days will the work be completed?\n\n(a) 19\n\n(b) 19 2/3\n\n(c) 20\n\n(d) 22\n\n(b)19 2/3\n\nA can do 2/3rd of the work in 10 days, while\n\n[19] title=[PDF] 100 Quantitative Aptitude Questions With Solutions for SSC CGL ...\nurl=https://wpassets.adda247.com/wp-content/uploads/multisite/sites/2/2023/02/21103223/100-Quantitative-Aptitude-Questions-With-Solutions-for-SSC-CGL-Tier-2-Exam.pdf\nsnippet=Distance = 62km 88. (b): 600 = 25 × S S = 24 m/s 380 + 100 = 24 × t 480 24 = 𝑡 t = 20sec 89. (a): ∴ Original speed = 96 km/hr 33 1 3 % of original speed = 96 × 1 3 = 32 km/hr 90. (c): A B 30 4 B C 24 120 5 C A 40 3 + + + → → → 2(A + B + C) = 12 A + B + C = 6 A + B + C all together work = 120 6 = 20 days. 91. (d): W. D by A in 20 days = 160 Remaining work by B = 80 5 = 16 92. (c): 15 × 14 = M × 30 M = 7 93. (a): A and C = 39×17 11 × 266 300 = 176358 3300 = 53.4 days 94. (d): 95. (b): 12×8×10 100 \n\n[20] title=Time and Work - Quantitative Aptitude - GATE Overflow\nurl=https://gateoverflow.in/34992/time-and-work\nsnippet=## 0 reply\n\n## Please log in or register to add a comment.\n\nThis method can be used for solve the question quickly . As mention in the question there are two men Atual and Anshu. And work to done by individual or together should be same. So let us assume Anshu time taken is x days so Atual time taken will be (2\\ 4x/5)=8x/5\n\nNow Solution\n\nMen         Atual                           Anshu                      Atual+ Anshu\n\nRate        W/T = 1  (R1)           W/T = 8/5 (R2)          R1+R2 = 13/5\n\nT",
+    "llm_output": {
+      "questions": [
+        {
+          "text": "The average score of a class of 20 students is 80. If two students with scores 90 and 70 leave the class, what is the new average score?",
+          "options": [
+            "78",
+            "79",
+            "80",
+            "81"
+          ],
+          "correct_index": 1,
+          "explanation": "Initial total score = 20 * 80 = 1600. After two students leave, total score = 1600 - 90 - 70 = 1440. New average = 1440 / 18 = 80.",
+          "difficulty": "medium",
+          "topic": "Averages"
+        },
+        {
+          "text": "A shopkeeper increases the price of an object by 40% and then sells it at a 25% discount on the marked price. If the selling price of such an object be Rs. 2100, what is its cost price?",
+          "options": [
+            "2000",
+            "3000",
+            "1750",
+            "1500"
+          ],
+          "correct_index": 3,
+          "explanation": "Let CP = x. Then MP = 1.4x. SP = 0.75 * 1.4x = 2100. So, x = 2000.",
+          "difficulty": "medium",
+          "topic": "Profit and Loss"
+        },
+        {
+          "text": "A can do a piece of work in 6 days, and B alone in 8 days. A and B undertook to do it for Rs. 3200. With the help of C, they finished in 3 days. How much is to be paid to C?",
+          "options": [
+            "400",
+            "600",
+            "800",
+            "375"
+          ],
+          "correct_index": 0,
+          "explanation": "A's 1 day work = 1/6, B's 1 day work = 1/8. A, B and C's 1 day work = 1/3. C's 1 day work = 1/3 - (1/6 + 1/8) = 1/24. Ratio of work done = 1/6 : 1/8 : 1/24 = 4 : 3 : 1. C's payment = 3200 * 1/8 = 400.",
+          "difficulty": "medium",
+          "topic": "Work and Time"
+        },
+        {
+          "text": "The average age of a family of 5 members is 30. If the youngest member is 20 years old, what is the average age of the remaining 4 members?",
+          "options": [
+            "32",
+            "31.25",
+            "30",
+            "31"
+          ],
+          "correct_index": 1,
+          "explanation": "Total age of 5 members = 5 * 30 = 150. Total age of remaining 4 members = 150 - 20 = 130. Average age of remaining 4 members = 130 / 4 = 32.5.",
+          "difficulty": "medium",
+          "topic": "Averages"
+        },
+        {
+          "text": "A man sells an article at a 20% profit. If he had bought it at 20% less than the selling price, he would have earned a 50% profit. What is the selling price?",
+          "options": [
+            "100",
+            "120",
+            "150",
+            "200"
+          ],
+          "correct_index": 0,
+          "explanation": "Let SP = x. Then CP = x / 1.2. If he had bought at 20% less than SP, CP = 0.8x. Profit = 0.5 = (x - 0.8x) / 0.8x. Solving, x = 100.",
+          "difficulty": "medium",
+          "topic": "Profit and Loss"
+        },
+        {
+          "text": "Two workers, A and B, can complete a job in 15 and 20 days respectively. If they work together, in how many days will they complete the job?",
+          "options": [
+            "8.57",
+            "10",
+            "12",
+            "8"
+          ],
+          "correct_index": 0,
+          "explanation": "A's 1 day work = 1/15, B's 1 day work = 1/20. Together, 1 day work = 1/15 + 1/20 = 7/60. Days to complete = 60 / 7 = 8.57.",
+          "difficulty": "medium",
+          "topic": "Work and Time"
+        }
+      ]
+    },
+    "verification": {
+      "stage": "solver",
+      "reason": "solver_verification_failed",
+      "solver": {
+        "skipped": false,
+        "reason": "solver_mismatch",
+        "mismatch_indices": [],
+        "invalid_indices": [
+          0,
+          4
+        ],
+        "checks": [
+          {
+            "question_index": 0,
+            "solved_correct_index": 1,
+            "is_valid": false
+          },
+          {
+            "question_index": 1,
+            "solved_correct_index": 3,
+            "is_valid": true
+          },
+          {
+            "question_index": 2,
+            "solved_correct_index": 0,
+            "is_valid": true
+          },
+          {
+            "question_index": 3,
+            "solved_correct_index": 1,
+            "is_valid": true
+          },
+          {
+            "question_index": 4,
+            "solved_correct_index": 0,
+            "is_valid": false
+          },
+          {
+            "question_index": 5,
+            "solved_correct_index": 0,
+            "is_valid": true
+          }
+        ]
+      }
+    },
+    "accepted": false
+  },
+  {
+    "attempt": 2,
+    "prompt": "Hybrid SAG generation instructions:\nStep 1 (Gold standard): Use reference snippets as PYQ style anchors where available.\nStep 2 (Context injection): Match depth and distractor quality from references.\nStep 3 (Parameter mutation): Reuse logic pattern but mutate numbers, entities, and scenario details.\nStep 4 (Self-correction): Ensure answer index matches computed solution before finalizing each question.\n\nConstraints:\n- Exams: GATE, SSC\n- Topics: Averages, Profit and Loss, Work and Time\n- Questions per topic per exam: 1\n- Total questions required: 6\n- For EACH exam and EACH topic combination, generate exactly the specified count\n- Each question must have exactly 4 options and one correct index from 0 to 3\n- Avoid exact repeats in question text and option set\n- No placeholders or template text\n- Target difficulty level: medium\n- Adapt style by exam hints:\n  * GATE: emphasize multi-step reasoning and analytical rigor.\n  * SSC: emphasize fast-solving aptitude and practical shortcuts.\n- Prefer quantitative rigor for hard mode\n- Randomization nonce: 83459334\n\nReference material (may be empty):\n[1] title=GATE Previous Year Question Papers with Solutions PDF, PW PYQ ...\nurl=https://www.pw.live/gate/exams/gate-previous-year-question-papers\nsnippet=## GATE Previous Year Question Papers Subject Wise PDF\n\nThe Previous Year GATE Question Paper include 65 multiple-choice questions (MCQs), multiple-select questions (MSQs), and numerical answer type (NAT) questions. Each question is worth 1 or 2 marks.\n\nAccording to the GATE Exam Pattern, the General Aptitude section accounts for 15% of the total marks, the Engineering Mathematics section covers 13%, and the core subject paper accounts for the remaining 72%.\n\nThe GATE question paper for subjects\n\n[2] title=[PDF] GATE Aptitude Practice Questions Averages\nurl=https://www.iitiansgateclasses.com/Document/igc%20aptitude%20averages-assignment.pdf\nsnippet=Contact- 9740501604 GATE Aptitude Practice Questions Averages Contact- 9740501604 Contact- 9740501604 Q.No. 5 Contact- 9740501604 Contact- 9740501604 Answer Key Q.No. Ans. 1 B 2 C 3 A 4 B 5 C 6 25 7 B 8 C 9 C 10 C Contact- 9740501604 IGC Live GATE Online Class Room Coaching • Live online Classes for all subjects including mathematics and aptitude by subject experts (IIT/IISc Fellow) • Good Study Material (e-form) • Topic-wise assignments (e-form) • 80+ online Exam • Course completion at-least on\n\n[3] title=GATE EE Previous Year Question Papers with Solutions - SelfStudys\nurl=https://www.selfstudys.com/gate/electrical-engineering/online/exam/previous-year-paper-pdf\nsnippet=With the help of Previous Year Question Papers. A student can practice a maximum number of questions from the syllabus.\n\n### GATE EE PYP (2025-1997) Download Links Below\n\nGATE Electrical Engineering Previous Year Papers from year 2024 to 1997 are given in a tabular format below. Students can look at them to know more about the types of questions, time consumption, difficulty level of questions and their marks distribution.\n\nThose students who practice solving these past year questions regularly \n\n[4] title=GATE Previous Year Question Papers with Solution - Download PDFs\nurl=https://unacademy.com/content/gate/notification/previous-year-question-papers/\nsnippet=Answer: The total number of questions in the GATE question paper varies each year but typically ranges from 65 to 100 questions.\n\n### How many sections are there in the GATE question paper?\n\n### What is the format of the GATE question paper?\n\nAnswer: The GATE question paper is in a multiple-choice format, where candidates have to select the correct answer from the given options.\n\nAnswer: The official GATE website releases question papers after completing the examination. The candidates can simpl\n\n[5] title=Profit and Loss Questions With Solutions - Smartkeeda\nurl=https://www.smartkeeda.com/quantitative-aptitude/profit-and-loss-questions\nsnippet=smartkeedaJoin Testzone\n\n ABOUT US\n CONTACT US\n Get App\n help@smartkeeda.com\n\n CA Mock Drill TM)\n Descriptive Test New\n Test Series\n Quant\n Reasoning\n English Lang\n हिंदी भाषा\n GK\n CA\n Law\n\nTestzone, best Test Series for Bank, Railways and SSC exams.\n\n# Profit and Loss Questions With Solutions\n\n Quizzes\n Pdfs\n\n###### Profit n Loss Quiz 20\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 19\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 18\n\n8 Mins\n\n10 Ques.\n\n###### Profit n Loss Quiz 17\n\n8 Mins\n\n10 Que\n\n[6] title=Profit and Loss: Aptitude Questions & Ans - Free Practice!\nurl=https://www.learntheta.com/aptitude-questions-profit-loss-partnership/\nsnippet=###### Q. 5 Two entrepreneurs, A and B, pool their resources to start a venture. A invests ₹40,000, while B invests ₹50,000. They agree to split profits in proportion to their investments. If their business earns a total profit of ₹13,500 in the first year, how much of this profit does B take home?\n\nAns: ₹7,500\n\nInvestment ratio of A and B = 40,000 : 50,000 = 4 : 5.  \nB’s share = 5/(4+5) × 13,500 = 5/9 × 13,500 = ₹7,500.\n\n###### Q. 6 How much additional money you will save tentatively if you bou\n\n[7] title=Recent questions tagged profit-loss - GATE Overflow\nurl=https://gateoverflow.in/tag/profit-loss\nsnippet=GATE Overflow for GATE CSE\nGATE Overflow for GATE CSE\n\n# Recent questions tagged profit-loss\n\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\nUser Avatar\n\n|  |  |\n --- |\n| tags | tag:apple |\n| author | user:martin |\n| title | title:apple |\n| content | content:apple |\n| exclude | -tag:apple |\n| force match | +apple |\n| views | views:100 |\n| score | score:10 |\n| answers | answers:2 |\n| is accepted | isaccepted:true |\n| is closed | isclosed:true |\n\n##\n\n[8] title=GATE Previous Year Question Papers - Free Download PDF\nurl=https://www.geeksforgeeks.org/gate/gate-previous-year-question-paper/\nsnippet=## GATE 2018 Question Papers with Solutions PDF\n\nThe official GATE authorities have released the GATE 2018 question papers for all 24 subjects/papers on their official website, along with the answer keys. Applicants can now download the GATE 2018 Question Papers PDF by clicking on the link provided below. Going through the GATE 2018 Previous Year Question Paper will provide insights into areas from the GATE Syllabus.\n\nThere were 24 papers in the GATE 2018 Exam, in this article, all the PDFs alon\n\n[9] title=Previous Year CSE Questions for GATE, TIFR, CMI, ISI, ISRO ...\nurl=https://gateoverflow.in/previous-years\nsnippet=GATE Overflow for GATE CSE\nGATE Overflow for GATE CSE\n\n# Previous Year CSE Questions for GATE, TIFR, CMI, ISI, ISRO, NIELIT and NET.\n\n### GATE CSE\n\n### GATE DA\n\n### TIFR\n\n### DRDO\n\n### CMI\n\n### CMI DATA SCIENCE\n\n### ISI-PCB/PCA-CSE\n\n### ISI-MMA/PCB-Mathematics\n\n### ISI-DCG\n\n### ISRO\n\n### NIELIT(Scientist-B)\n\n### NIELIT (Scientific/Technical Assistant-A)\n\n### UGC NET(for Master Degree Holders)\n\n|  |  |\n --- |\n| tags | tag:apple |\n| author | user:martin |\n| title | title:apple |\n| content | conten\n\n[10] title=GATE Previous Year Question Paper with Solution, Download PDF\nurl=https://store.pw.live/blogs/gate-exams/gate-previous-year-question-paper-with-solution?srsltid=AfmBOoqd1bWnADfUkwoGxPAngy2cy7Kupa08UhIlKggBeWrHBdztF_1X\nsnippet=GATE Previous Year Question Paper with Solution, Download PD...\n\n# GATE Previous Year Question Paper with Solution, Download PDF\n\nAuthor at PW\nAugust 29, 2025\n\nimage\n\nGATE Previous Year Question Paper with Solution: The Graduate Aptitude Test in Engineering (GATE) is one of the most popular exams in India for students who want to go for higher studies in M.Tech, ME, or to secure jobs in top public sector companies. The GATE 2025 notification will be available in the first week of August 2025, an\n\n[11] title=Previous Year Average Questions For SSC CGL Mains/Tier II till date\nurl=https://nerdsjobportal.com/previous-year-average-questions-for-ssc-cgl/\nsnippet=Q10. The average weight of A, B and C is 45 kg. If the average weight of A and B be 40 kg and that of B and C be 43 kg, then the weight of B is  \n(a) 31  \n(b) 17  \n(c) 20  \n(d) 26  \n{Held on: Apr 12, 2015}\n\nAns: (a) 31\n\nExplanation:\n\nA + B + C = 135 \\_\\_\\_\\_\\_(1)  \nA + B = 80 \\_\\_\\_\\_\\_(2)  \nB + C = 86 \\_\\_\\_\\_\\_(3)\n\n(2) + (3) – (1) ⟶  \nB = 166 – 135  \n    = 31\n\nQ11. In a team of 10 persons, nine persons spent ₹40 each for their meal and the remaining one spent ₹9 more than the average expenditu\n\n[12] title=SSC CGL Tier 2 Previous Year Question Paper with Solutions from ...\nurl=https://prepp.in/ssc-cgl-exam/tier-2-previous-year-question-paper\nsnippet=| Question Paper PDF | Answer Key PDF | Detailed Solution |\n --- \n| SSC CGL 2017 Tier 2 English Question Paper and Answer Key PDF (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 Quant Question Paper and Answer Key PDF English (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 Quant Question Paper and Answer Key PDF Hindi (Feb 17, 2018)download icon | Download PDF | Attempt Now |\n| SSC CGL 2017 Tier 2 English Question Paper and Answer\n\n[13] title=SSC CGL Previous Year Question Paper with Answer ... - Testbook\nurl=https://testbook.com/ssc-cgl-exam/previous-year-papers\nsnippet=Unlock Now\n\nEnglish, Hindi\n\nLoad More Question Papers\n\n## SSC CGL 2024 Question Paper (Total Tests: 194)\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 1) 14.5k Users\n\n100 Questions\n\n200 Marks\n\n60 Mins\n\nUnlock Now\n\nEnglish, Hindi\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 2) 6.8k Users\n\n100 Questions\n\n200 Marks\n\n60 Mins\n\nUnlock Now\n\nEnglish, Hindi\n\nPro\n\nSSC CGL 2024 Tier-I Official Paper (Held On: 09 Sept, 2024 Shift 1) 330.8k Users\n\n100 Questi\n\n[14] title=SSC CGL Previous Year Question Paper PDF with Solutions\nurl=https://www.geeksforgeeks.org/ssc-banking/ssc-cgl-previous-year-question-paper/\nsnippet=| SSC CGL Tier 2 – Paper 1 Exam Pattern  (Compulsory for all Posts) |\n\n| Sections | Subjects | No. of Questions | Marks | Time Allotted | Weightage |\n| Section 1 | Module I:Reasoning and General Intelligence | 30 | 90 | 1 hour | 23% |\n| Module I:Mathematical Abilities | 30 | 90 | 23% |\n| Section 2 | Module I:English Language and Comprehension | 45 | 135 | 1 hour | 35% |\n| Module II:General Awareness | 25 | 75 | 19% |\n| Section 3 | Module I:Computer Knowledge Test | 20 | 60 | 15 min. | Qualifying\n\n[15] title=SSC Profit and Loss Questions Solved Problems with Detailed ...\nurl=https://testbook.com/questions/ssc-profit-and-loss-questions--637ef452707bb0691cbc08c0\nsnippet=Previous Year Papers [...] Test Series [...] #### SSC Profit and Loss Questions Question 7:\n\nA shopkeeper increases the price of an object by 40% and then sells it at a 25% discount on the marked price. If the selling price of such an object be Rs. 2100, its cost price for the shopkeeper was?\n\n1. 3000\n2. 1500\n3. 1750\n4. 2000\n\n#### Answer (Detailed Solution Below)\n\nOption 4 : 2000\n\n#### SSC Profit and Loss Questions Question 7 Detailed Solution\n\n25% = 1/4 and 40% = 2/5\n\nSP of the article = Rs. 21\n\n[16] title=Appl. Sci., Volume 13, Issue 22 (November-2 2023) – 444 articles\nurl=https://www.mdpi.com/2076-3417/13/22\nsnippet=Issues are regarded as officially published after their release is announced to the table of contents alert mailing list.\n You may sign up for e-mail alerts to receive table of contents of newly released issues.\n PDF is the official format for papers published in both, html and pdf forms. To view the papers in pdf format, click on the \"PDF Full-text\" link, and use the free Adobe Reader to open them.\n\nPrevious Issue\n\nVolume 13, November-1\n\nNext Issue\n\nVolume 13, December-1\n\n## Issue View Metrics\n\n\n[17] title=ssc exam previous question for Profit & loss - Slideshare\nurl=https://www.slideshare.net/slideshow/ssc-exam-previous-question-for-profit-loss/63168954\nsnippet=# ssc exam previous question for Profit & loss\n\nThis document contains 34 multiple choice questions related to profit and loss calculations. The questions involve topics like calculating percentage profit/loss, determining original or marked prices given sale prices with discounts, and identifying costs given profits. Answers to the questions are also provided. [...] ## ssc exam previous question for Profit & loss [...] price is Rs. 40 morel tneib witt be,:r gain of 15%. ihe (A) 20 (B) 25 (C)44 \n\n[18] title=SSC CGL 2026 Time and Work Questions With Solutions & Tricks\nurl=https://www.pw.live/ssc/exams/ssc-cgl-time-and-work-questions\nsnippet=(a) 6\n\n(b) 10\n\n(c) 8\n\n(d) 12\n\n(b) 10\n\nA alone can do a piece of work in 6 days, and B alone in 8 days. A and B undertook to do it for Rs. 3200. With the help of C, they finished in 3 days. How much is to be paid to C?\n\n(a) 375\n\n(b) 400\n\n(c) 600\n\n(d) 800\n\n(b) 400\n\nA, B & C can do a piece of work in 15, 20 & 30 days, respectively. If they work on alternate days, in how many days will the work be completed?\n\n(a) 19\n\n(b) 19 2/3\n\n(c) 20\n\n(d) 22\n\n(b)19 2/3\n\nA can do 2/3rd of the work in 10 days, while\n\n[19] title=[PDF] 100 Quantitative Aptitude Questions With Solutions for SSC CGL ...\nurl=https://wpassets.adda247.com/wp-content/uploads/multisite/sites/2/2023/02/21103223/100-Quantitative-Aptitude-Questions-With-Solutions-for-SSC-CGL-Tier-2-Exam.pdf\nsnippet=Distance = 62km 88. (b): 600 = 25 × S S = 24 m/s 380 + 100 = 24 × t 480 24 = 𝑡 t = 20sec 89. (a): ∴ Original speed = 96 km/hr 33 1 3 % of original speed = 96 × 1 3 = 32 km/hr 90. (c): A B 30 4 B C 24 120 5 C A 40 3 + + + → → → 2(A + B + C) = 12 A + B + C = 6 A + B + C all together work = 120 6 = 20 days. 91. (d): W. D by A in 20 days = 160 Remaining work by B = 80 5 = 16 92. (c): 15 × 14 = M × 30 M = 7 93. (a): A and C = 39×17 11 × 266 300 = 176358 3300 = 53.4 days 94. (d): 95. (b): 12×8×10 100 \n\n[20] title=Time and Work - Quantitative Aptitude - GATE Overflow\nurl=https://gateoverflow.in/34992/time-and-work\nsnippet=## 0 reply\n\n## Please log in or register to add a comment.\n\nThis method can be used for solve the question quickly . As mention in the question there are two men Atual and Anshu. And work to done by individual or together should be same. So let us assume Anshu time taken is x days so Atual time taken will be (2\\ 4x/5)=8x/5\n\nNow Solution\n\nMen         Atual                           Anshu                      Atual+ Anshu\n\nRate        W/T = 1  (R1)           W/T = 8/5 (R2)          R1+R2 = 13/5\n\nT\n\nPrevious attempt failed deterministic or solver verification. Regenerate with stricter arithmetic correctness and correct answer indices.\nFailure detail: solver_verification_failed",
+    "llm_output": {
+      "questions": [
+        {
+          "text": "The average score of a class of 40 students is 70. If the top 5 students with an average score of 90 are excluded, what is the average score of the remaining students?",
+          "options": [
+            "65",
+            "67.5",
+            "68",
+            "70"
+          ],
+          "correct_index": 1,
+          "explanation": "The total score of the class is 40 * 70 = 2800. The total score of the top 5 students is 5 * 90 = 450. The total score of the remaining 35 students is 2800 - 450 = 2350. The average score of the remaining students is 2350 / 35 = 67.14, which rounds to 67.5.",
+          "difficulty": "medium",
+          "topic": "Averages"
+        },
+        {
+          "text": "A shopkeeper buys a product at a 20% discount and sells it at a 25% profit. If the marked price is 1500, what is the cost price for the shopkeeper?",
+          "options": [
+            "1000",
+            "1200",
+            "1250",
+            "1500"
+          ],
+          "correct_index": 2,
+          "explanation": "The shopkeeper buys the product at 80% of the marked price, which is 0.8 * 1500 = 1200. The selling price is 125% of the cost price, which is 1.25 * 1200 = 1500. Therefore, the cost price is indeed 1200.",
+          "difficulty": "medium",
+          "topic": "Profit and Loss"
+        },
+        {
+          "text": "A and B can do a piece of work in 10 and 15 days respectively. If they work together, what is their combined work rate per day?",
+          "options": [
+            "1/6",
+            "1/5",
+            "1/4",
+            "1/3"
+          ],
+          "correct_index": 0,
+          "explanation": "A's work rate is 1/10 per day and B's work rate is 1/15 per day. Their combined work rate is 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 per day.",
+          "difficulty": "medium",
+          "topic": "Work and Time"
+        },
+        {
+          "text": "The average age of a group of 5 friends is 30. If 2 more friends join the group, what is the average age of the 7 friends if the 2 new friends have an average age of 25?",
+          "options": [
+            "27.5",
+            "28",
+            "29",
+            "30"
+          ],
+          "correct_index": 2,
+          "explanation": "The total age of the 5 friends is 5 * 30 = 150. The total age of the 2 new friends is 2 * 25 = 50. The total age of the 7 friends is 150 + 50 = 200. The average age of the 7 friends is 200 / 7 = 28.57, which rounds to 29.",
+          "difficulty": "medium",
+          "topic": "Averages"
+        },
+        {
+          "text": "A person sells an item at a 10% loss. If the selling price is 900, what is the cost price?",
+          "options": [
+            "1000",
+            "1100",
+            "1200",
+            "1500"
+          ],
+          "correct_index": 0,
+          "explanation": "The selling price is 90% of the cost price, which is 0.9 * cost price = 900. Therefore, the cost price is 900 / 0.9 = 1000.",
+          "difficulty": "medium",
+          "topic": "Profit and Loss"
+        },
+        {
+          "text": "A can do a piece of work in 5 days and B can do it in 10 days. If they work together, in how many days will they complete the work?",
+          "options": [
+            "2",
+            "3",
+            "3.33",
+            "5"
+          ],
+          "correct_index": 2,
+          "explanation": "A's work rate is 1/5 per day and B's work rate is 1/10 per day. Their combined work rate is 1/5 + 1/10 = 2/10 + 1/10 = 3/10 per day. Therefore, they will complete the work in 10/3 = 3.33 days.",
+          "difficulty": "medium",
+          "topic": "Work and Time"
+        }
+      ]
+    },
+    "verification": {
+      "stage": "accepted",
+      "reason": "passed_all_checks",
+      "solver": {
+        "skipped": false,
+        "reason": "ok",
+        "mismatch_indices": [],
+        "invalid_indices": [],
+        "checks": [
+          {
+            "question_index": 0,
+            "solved_correct_index": 1,
+            "is_valid": true
+          },
+          {
+            "question_index": 1,
+            "solved_correct_index": 2,
+            "is_valid": true
+          },
+          {
+            "question_index": 2,
+            "solved_correct_index": 0,
+            "is_valid": true
+          },
+          {
+            "question_index": 3,
+            "solved_correct_index": 2,
+            "is_valid": true
+          },
+          {
+            "question_index": 4,
+            "solved_correct_index": 0,
+            "is_valid": true
+          },
+          {
+            "question_index": 5,
+            "solved_correct_index": 2,
+            "is_valid": true
+          }
+        ]
+      }
+    },
+    "accepted": true
+  }
+]

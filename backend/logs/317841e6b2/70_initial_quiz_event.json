@@ -1,0 +1,18 @@
+{
+  "type": "NEXT_QUESTION",
+  "room_id": "317841e6b2",
+  "question_index": 0,
+  "question_data": {
+    "text": "The average of 5 consecutive integers is 20. What is the sum of the largest and smallest integers?",
+    "options": [
+      "98",
+      "100",
+      "102",
+      "105"
+    ],
+    "difficulty": "medium",
+    "topic": "Averages"
+  },
+  "ends_at": 1774761808542,
+  "total_questions": 30
+}

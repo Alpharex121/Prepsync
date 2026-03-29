@@ -1,0 +1,18 @@
+{
+  "type": "NEXT_QUESTION",
+  "room_id": "f72dfe05f5",
+  "question_index": 0,
+  "question_data": {
+    "text": "The average score of a class of 40 students is 70. If the top 5 students with an average score of 90 are excluded, what is the average score of the remaining students?",
+    "options": [
+      "65",
+      "67.5",
+      "68",
+      "70"
+    ],
+    "difficulty": "medium",
+    "topic": "Averages"
+  },
+  "ends_at": 1774760695501,
+  "total_questions": 6
+}

@@ -1,0 +1,7 @@
+{
+  "type": "ROOM_STATE_CHANGE",
+  "status": "ACTIVE",
+  "ends_at": 1774760695501,
+  "test_ends_at": 0,
+  "current_question": 0
+}

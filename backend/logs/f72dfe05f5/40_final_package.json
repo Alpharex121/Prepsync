@@ -1,0 +1,82 @@
+{
+  "questions": [
+    {
+      "text": "The average score of a class of 40 students is 70. If the top 5 students with an average score of 90 are excluded, what is the average score of the remaining students?",
+      "options": [
+        "65",
+        "67.5",
+        "68",
+        "70"
+      ],
+      "correct_index": 1,
+      "explanation": "The total score of the class is 40 * 70 = 2800. The total score of the top 5 students is 5 * 90 = 450. The total score of the remaining 35 students is 2800 - 450 = 2350. The average score of the remaining students is 2350 / 35 = 67.14, which rounds to 67.5.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "A shopkeeper buys a product at a 20% discount and sells it at a 25% profit. If the marked price is 1500, what is the cost price for the shopkeeper?",
+      "options": [
+        "1000",
+        "1200",
+        "1250",
+        "1500"
+      ],
+      "correct_index": 2,
+      "explanation": "The shopkeeper buys the product at 80% of the marked price, which is 0.8 * 1500 = 1200. The selling price is 125% of the cost price, which is 1.25 * 1200 = 1500. Therefore, the cost price is indeed 1200.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "A and B can do a piece of work in 10 and 15 days respectively. If they work together, what is their combined work rate per day?",
+      "options": [
+        "1/6",
+        "1/5",
+        "1/4",
+        "1/3"
+      ],
+      "correct_index": 0,
+      "explanation": "A's work rate is 1/10 per day and B's work rate is 1/15 per day. Their combined work rate is 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 per day.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    },
+    {
+      "text": "The average age of a group of 5 friends is 30. If 2 more friends join the group, what is the average age of the 7 friends if the 2 new friends have an average age of 25?",
+      "options": [
+        "27.5",
+        "28",
+        "29",
+        "30"
+      ],
+      "correct_index": 2,
+      "explanation": "The total age of the 5 friends is 5 * 30 = 150. The total age of the 2 new friends is 2 * 25 = 50. The total age of the 7 friends is 150 + 50 = 200. The average age of the 7 friends is 200 / 7 = 28.57, which rounds to 29.",
+      "difficulty": "medium",
+      "topic": "Averages"
+    },
+    {
+      "text": "A person sells an item at a 10% loss. If the selling price is 900, what is the cost price?",
+      "options": [
+        "1000",
+        "1100",
+        "1200",
+        "1500"
+      ],
+      "correct_index": 0,
+      "explanation": "The selling price is 90% of the cost price, which is 0.9 * cost price = 900. Therefore, the cost price is 900 / 0.9 = 1000.",
+      "difficulty": "medium",
+      "topic": "Profit and Loss"
+    },
+    {
+      "text": "A can do a piece of work in 5 days and B can do it in 10 days. If they work together, in how many days will they complete the work?",
+      "options": [
+        "2",
+        "3",
+        "3.33",
+        "5"
+      ],
+      "correct_index": 2,
+      "explanation": "A's work rate is 1/5 per day and B's work rate is 1/10 per day. Their combined work rate is 1/5 + 1/10 = 2/10 + 1/10 = 3/10 per day. Therefore, they will complete the work in 10/3 = 3.33 days.",
+      "difficulty": "medium",
+      "topic": "Work and Time"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "exam": "GATE",
+    "topic": "Averages",
+    "query": "\"GATE\" \"Averages\" \"medium\" previous year question with solution MCQ numerical PDF OR gateoverflow OR official paper",
+    "max_results": 4
+  },
+  {
+    "exam": "GATE",
+    "topic": "Profit and Loss",
+    "query": "\"GATE\" \"Profit and Loss\" \"medium\" previous year question with solution MCQ numerical PDF OR gateoverflow OR official paper",
+    "max_results": 4
+  },
+  {
+    "exam": "GATE",
+    "topic": "Work and Time",
+    "query": "\"GATE\" \"Work and Time\" \"medium\" previous year question with solution MCQ numerical PDF OR gateoverflow OR official paper",
+    "max_results": 4
+  },
+  {
+    "exam": "SSC",
+    "topic": "Averages",
+    "query": "\"SSC\" \"Averages\" \"medium\" previous year question with solution MCQ numerical PDF OR gateoverflow OR official paper",
+    "max_results": 4
+  },
+  {
+    "exam": "SSC",
+    "topic": "Profit and Loss",
+    "query": "\"SSC\" \"Profit and Loss\" \"medium\" previous year question with solution MCQ numerical PDF OR gateoverflow OR official paper",
+    "max_results": 4
+  }
+]

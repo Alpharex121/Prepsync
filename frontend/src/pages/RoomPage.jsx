@@ -790,6 +790,20 @@ export default function RoomPage() {
                     />
                   </>
                 ) : null}
+
+                <label>Topics (comma separated)</label>
+                <input
+                  value={topics}
+                  onChange={(event) => updateRoom({ topics: event.target.value })}
+                  placeholder="Averages, Profit and Loss, Work and Time"
+                />
+
+                <label>Exams (comma separated)</label>
+                <input
+                  value={exams}
+                  onChange={(event) => updateRoom({ exams: event.target.value })}
+                  placeholder="GATE, SSC"
+                />
               </div>
               <button type="button" disabled={isBusy} onClick={createRoom} style={{marginTop: '1.25rem', width: '100%'}}>
                 {isBusy ? "Creating..." : "Create Room"}
@@ -900,7 +914,7 @@ export default function RoomPage() {
               <button
                 key={question.question_index}
                 type="button"
-                className={testAnsweredQuestionIndices.includes(question.question_index) ? "palette-btn answered" : activeTestQuestionIndex === question.question_index ? "palette-btn active" : "palette-btn"}
+                className={`palette-btn${testAnsweredQuestionIndices.includes(question.question_index) ? " answered" : ""}${activeTestQuestionIndex === question.question_index ? " active" : ""}`}
                 onClick={() => navigateToTestQuestion(question.question_index)}
               >
                 Q{idx + 1}
@@ -997,6 +1011,7 @@ export default function RoomPage() {
     </section>
   );
 }
+
 
 
 
