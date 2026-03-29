@@ -36,6 +36,8 @@ class RealtimeEngine:
         self._room_sessions: dict[str, dict[str, UserSession]] = {}
         self._room_submissions: dict[str, set[str]] = {}
         self._room_participants: dict[str, set[str]] = {}
+        self._room_end_votes: dict[str, set[str]] = {}
+        self._room_end_vote_requester: dict[str, str] = {}
         self._test_room_sections: dict[str, list[dict]] = {}
         self._test_user_state: dict[str, dict[str, TestUserState]] = {}
         self._room_finalized: set[str] = set()
@@ -98,6 +100,7 @@ class RealtimeEngine:
         participants = self._room_participants.get(room_id)
         if participants is not None:
             participants.discard(user_id)
+        await self._maybe_finalize_on_end_vote(room_id)
 
     async def maybe_advance_quiz_on_presence_change(self, room_id: str) -> None:
         room_service = await get_room_service()
@@ -184,6 +187,10 @@ class RealtimeEngine:
             section_payload = await self._build_test_section_payload(room_id, user_state)
             payload.update(section_payload)
 
+        vote_snapshot = self._get_end_vote_snapshot(room_id)
+        if vote_snapshot:
+            payload["end_vote"] = vote_snapshot
+
         return payload
 
     async def handle_room_state_change(self, room_id: str, actor_user_id: str, status_value: str) -> dict:
@@ -199,6 +206,7 @@ class RealtimeEngine:
             timing = await room_service.activate_session(room_id)
             self._room_submissions[room_id] = set()
             self._room_finalized.discard(room_id)
+            self._clear_end_vote(room_id)
 
         event = {
             "type": "ROOM_STATE_CHANGE",
@@ -217,6 +225,35 @@ class RealtimeEngine:
             await self._ensure_test_sections(room_id, config.topics)
 
         return event
+
+    async def handle_end_session_vote(self, room_id: str, user_id: str) -> dict:
+        room_service = await get_room_service()
+        status = await room_service.get_status(room_id)
+        if status != RoomStatus.ACTIVE:
+            return {"type": "END_SESSION_VOTE_REJECTED", "detail": "Room is not active"}
+
+        participants = self._room_participants.get(room_id, set())
+        if user_id not in participants:
+            return {"type": "END_SESSION_VOTE_REJECTED", "detail": "User is not an active participant"}
+
+        votes = self._room_end_votes.setdefault(room_id, set())
+        if room_id not in self._room_end_vote_requester:
+            self._room_end_vote_requester[room_id] = user_id
+        votes.add(user_id)
+
+        snapshot = self._get_end_vote_snapshot(room_id)
+        await self.broadcast(
+            room_id,
+            {
+                "type": "END_SESSION_VOTE_UPDATE",
+                **(snapshot or {}),
+            },
+        )
+
+        if await self._maybe_finalize_on_end_vote(room_id):
+            return {"type": "END_SESSION_VOTE_ACCEPTED", "detail": "Vote passed. Ending session."}
+
+        return {"type": "END_SESSION_VOTE_ACCEPTED", **(snapshot or {})}
 
     async def publish_current_question(self, room_id: str) -> dict:
         room_service = await get_room_service()
@@ -478,6 +515,7 @@ class RealtimeEngine:
         await self.broadcast(room_id, event)
 
         self._room_finalized.add(room_id)
+        self._clear_end_vote(room_id)
         self._room_submissions.pop(room_id, None)
         self._test_user_state.pop(room_id, None)
         self._test_room_sections.pop(room_id, None)
@@ -542,6 +580,7 @@ class RealtimeEngine:
                 self._room_sessions.pop(room_id, None)
                 self._room_submissions.pop(room_id, None)
                 self._room_participants.pop(room_id, None)
+                self._clear_end_vote(room_id)
 
     async def _handle_quiz_timeouts(self, now_ms: int) -> None:
         room_service = await get_room_service()
@@ -678,6 +717,46 @@ class RealtimeEngine:
         sessions = self._room_sessions.get(room_id, {})
         return sum(1 for session in sessions.values() if session.connected)
 
+    def _clear_end_vote(self, room_id: str) -> None:
+        self._room_end_votes.pop(room_id, None)
+        self._room_end_vote_requester.pop(room_id, None)
+
+    def _get_end_vote_snapshot(self, room_id: str) -> dict | None:
+        votes = self._room_end_votes.get(room_id, set())
+        requester = self._room_end_vote_requester.get(room_id)
+        if not votes and not requester:
+            return None
+
+        participants = sorted(self._room_participants.get(room_id, set()))
+        yes_voters = sorted(votes)
+        required = len(participants)
+        return {
+            "active": True,
+            "requested_by": requester or "",
+            "yes_voters": yes_voters,
+            "required_votes": required,
+            "remaining_votes": max(0, required - len(votes)),
+            "participants": participants,
+        }
+
+    async def _maybe_finalize_on_end_vote(self, room_id: str) -> bool:
+        participants = self._room_participants.get(room_id, set())
+        votes = self._room_end_votes.get(room_id, set())
+        if not participants or not votes:
+            return False
+
+        if all(user_id in votes for user_id in participants):
+            await self.broadcast(
+                room_id,
+                {
+                    "type": "END_SESSION_VOTE_PASSED",
+                    "room_id": room_id,
+                },
+            )
+            await self.finalize_results(room_id)
+            return True
+        return False
+
 
 _engine: RealtimeEngine | None = None
 
@@ -687,6 +766,16 @@ def get_realtime_engine() -> RealtimeEngine:
     if _engine is None:
         _engine = RealtimeEngine()
     return _engine
+
+
+
+
+
+
+
+
+
+
 
 
 

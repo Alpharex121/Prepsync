@@ -11,6 +11,11 @@ import RoomPage from "./pages/RoomPage";
 export default function App() {
   return (
     <div className="app-shell">
+      <div className="ambient-bg">
+        <div className="ambient-shape shape-1"></div>
+        <div className="ambient-shape shape-2"></div>
+        <div className="ambient-shape shape-3"></div>
+      </div>
       <Navbar />
       <main className="app-content">
         <Routes>

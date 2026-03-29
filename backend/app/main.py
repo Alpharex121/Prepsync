@@ -14,6 +14,7 @@ from app.schemas.ws import (
     RoomStateChangeEvent,
     SubmitAnswerEvent,
     SubmitSectionEvent,
+    EndSessionVoteEvent,
 )
 from app.services.realtime import get_realtime_engine
 
@@ -167,6 +168,17 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
                 await _safe_send_json(websocket, ws_event)
                 continue
 
+            if event_type == "END_SESSION_VOTE":
+                try:
+                    EndSessionVoteEvent.model_validate(payload)
+                except ValidationError as exc:
+                    await _safe_send_json(websocket, {"type": "ERROR", "detail": f"Invalid END_SESSION_VOTE payload: {exc}"})
+                    continue
+
+                ws_event = await engine.handle_end_session_vote(room_id, user_id)
+                await _safe_send_json(websocket, ws_event)
+                continue
+
             if event_type == "FINAL_RESULTS":
                 ws_event = await engine.finalize_results(room_id)
                 await _safe_send_json(websocket, ws_event)
@@ -191,5 +203,6 @@ async def room_socket(websocket: WebSocket, room_id: str) -> None:
     except Exception as exc:
         log_error("websocket_room", exc)
         raise
+
 
 

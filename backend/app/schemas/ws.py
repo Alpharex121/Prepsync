@@ -25,3 +25,8 @@ class NavigateQuestionEvent(BaseModel):
 class SubmitSectionEvent(BaseModel):
     type: str
     section_index: int = Field(ge=0, le=500)
+
+
+class EndSessionVoteEvent(BaseModel):
+    type: str
+

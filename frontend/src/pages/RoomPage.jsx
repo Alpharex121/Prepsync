@@ -64,6 +64,7 @@ export default function RoomPage() {
     sectionQuestions,
     activeTestQuestionIndex,
     testAnsweredQuestionIndices,
+    endVote,
   } = room;
 
   const socketRef = useRef(null);
@@ -389,6 +390,7 @@ export default function RoomPage() {
         testEndsAt: payload.test_ends_at ?? 0,
         ownerId: payload.owner_id ?? ownerId,
         totalQuizQuestions: payload.total_questions ?? totalQuizQuestions,
+        endVote: payload.end_vote ?? null,
         info: "",
         error: "",
       });
@@ -463,6 +465,7 @@ export default function RoomPage() {
       }
       if (payload.status !== "ACTIVE") {
         setQuizAnsweredUsers([]);
+        patch.endVote = null;
       }
       return;
     }
@@ -564,8 +567,34 @@ export default function RoomPage() {
       return;
     }
 
+    if (payload.type === "END_SESSION_VOTE_UPDATE") {
+      updateRoom({
+        endVote: {
+          active: true,
+          requestedBy: payload.requested_by ?? "",
+          yesVoters: payload.yes_voters ?? [],
+          requiredVotes: payload.required_votes ?? 0,
+          remainingVotes: payload.remaining_votes ?? 0,
+        },
+        info: payload.remaining_votes > 0
+          ? `End vote in progress (${(payload.yes_voters ?? []).length}/${payload.required_votes ?? 0})`
+          : "All votes received. Ending session...",
+      });
+      return;
+    }
+
+    if (payload.type === "END_SESSION_VOTE_REJECTED") {
+      updateRoom({ error: payload.detail ?? "Unable to register end vote" });
+      return;
+    }
+
+    if (payload.type === "END_SESSION_VOTE_PASSED") {
+      updateRoom({ info: "All participants voted yes. Ending session..." });
+      return;
+    }
+
     if (payload.type === "FINAL_RESULTS") {
-      updateRoom({ finalResults: payload.leaderboard ?? [], roomStatus: "FINISHED", endsAt: 0, testEndsAt: 0, countdown: 0, info: "" });
+      updateRoom({ finalResults: payload.leaderboard ?? [], roomStatus: "FINISHED", endsAt: 0, testEndsAt: 0, countdown: 0, info: "", endVote: null });
     }
   }
 
@@ -664,6 +693,13 @@ export default function RoomPage() {
     sendSocket({ type: "SUBMIT_SECTION", section_index: sectionIndex });
   }
 
+  function voteToEndSession() {
+    updateRoom({ error: "" });
+    sendSocket({ type: "END_SESSION_VOTE" });
+  }
+
+  const hasVotedToEnd = Boolean(endVote?.yesVoters?.includes(user?.username));
+
   const activeTestQuestion = useMemo(
     () => sectionQuestions.find((question) => question.question_index === activeTestQuestionIndex) ?? null,
     [sectionQuestions, activeTestQuestionIndex],
@@ -683,77 +719,94 @@ export default function RoomPage() {
       {error ? <p className="error-text">{error}</p> : null}
       {info ? <p className="info-text">{info}</p> : null}
 
-      {!roomId ? (
-        <div className="card-grid">
-          <article className="panel">
-            <h3>Create Room</h3>
-            <div className="form-grid">
-              <label>Mode</label>
-              <select value={mode} onChange={(event) => updateRoom({ mode: event.target.value })}>
-                <option value="QUIZ">Quiz</option>
-                <option value="TEST">Test</option>
-              </select>
+      <div className="room-layout" style={{ display: 'grid', gridTemplateColumns: roomId ? '1fr 300px' : '1fr', gap: '2rem', alignItems: 'start', position: 'relative' }}>
+        <div className="room-main" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {!roomId ? (
+        <div className="split-hero animate-slide-up">
+          <div className="empty-state">
+            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="200" r="100" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="10 10">
+                <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="30s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="200" cy="200" r="130" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="5 15">
+                <animateTransform attributeName="transform" type="rotate" from="360 200 200" to="0 200 200" dur="40s" repeatCount="indefinite"/>
+              </circle>
+              <path d="M200 130L260 240H140L200 130Z" fill="url(#core_neon)"/>
+              <defs>
+                <linearGradient id="core_neon" x1="200" y1="130" x2="200" y2="240" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#a78bfa" stopOpacity="0.8"/>
+                  <stop offset="1" stopColor="#3b82f6" stopOpacity="0.3"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <h3 style={{color: 'var(--text-primary)', marginBottom: '0'}}>Waiting for connection...</h3>
+            <p className="muted-text">Create or join a workspace to begin.</p>
+          </div>
+          <div className="card-grid" style={{gridTemplateColumns: 'minmax(280px, 1fr)'}}>
+            <article className="panel">
+              <h3>Create Room</h3>
+              <div className="form-grid">
+                <label>Mode</label>
+                <select value={mode} onChange={(event) => updateRoom({ mode: event.target.value })}>
+                  <option value="QUIZ">Quiz</option>
+                  <option value="TEST">Test</option>
+                </select>
 
-              <label>Difficulty</label>
-              <select value={difficulty} onChange={(event) => updateRoom({ difficulty: event.target.value })}>
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
+                <label>Difficulty</label>
+                <select value={difficulty} onChange={(event) => updateRoom({ difficulty: event.target.value })}>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
 
-              <label>Questions / Topic</label>
-              <input
-                type="number"
-                min="1"
-                value={count}
-                onChange={(event) => updateRoom({ count: event.target.value })}
-              />
+                <label>Questions / Topic</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={count}
+                  onChange={(event) => updateRoom({ count: event.target.value })}
+                />
 
-              {mode === "QUIZ" ? (
-                <>
-                  <label>Time / Question (sec)</label>
-                  <input
-                    type="number"
-                    min="5"
-                    value={timePerQ}
-                    onChange={(event) => updateRoom({ timePerQ: event.target.value })}
-                  />
-                </>
-              ) : null}
+                {mode === "QUIZ" ? (
+                  <>
+                    <label>Time / Question (sec)</label>
+                    <input
+                      type="number"
+                      min="5"
+                      value={timePerQ}
+                      onChange={(event) => updateRoom({ timePerQ: event.target.value })}
+                    />
+                  </>
+                ) : null}
 
-              {mode === "TEST" ? (
-                <>
-                  <label>Time / Section (sec)</label>
-                  <input
-                    type="number"
-                    min="30"
-                    value={timePerSection}
-                    onChange={(event) => updateRoom({ timePerSection: event.target.value })}
-                  />
-                </>
-              ) : null}
+                {mode === "TEST" ? (
+                  <>
+                    <label>Time / Section (sec)</label>
+                    <input
+                      type="number"
+                      min="30"
+                      value={timePerSection}
+                      onChange={(event) => updateRoom({ timePerSection: event.target.value })}
+                    />
+                  </>
+                ) : null}
+              </div>
+              <button type="button" disabled={isBusy} onClick={createRoom} style={{marginTop: '1.25rem', width: '100%'}}>
+                {isBusy ? "Creating..." : "Create Room"}
+              </button>
+            </article>
 
-              <label>Topics</label>
-              <input value={topics} onChange={(event) => updateRoom({ topics: event.target.value })} />
-
-              <label>Exams</label>
-              <input value={exams} onChange={(event) => updateRoom({ exams: event.target.value })} />
-            </div>
-            <button type="button" disabled={isBusy} onClick={createRoom}>
-              {isBusy ? "Creating..." : "Create Room"}
-            </button>
-          </article>
-
-          <article className="panel">
-            <h3>Join Existing Room</h3>
-            <div className="form-grid">
-              <label>Room ID</label>
-              <input value={roomIdInput} onChange={(event) => updateRoom({ roomIdInput: event.target.value })} />
-            </div>
-            <button type="button" disabled={isBusy || !roomIdInput} onClick={joinRoom}>
-              Join Room
-            </button>
-          </article>
+            <article className="panel">
+              <h3>Join Existing Room</h3>
+              <div className="form-grid">
+                <label>Room ID</label>
+                <input value={roomIdInput} onChange={(event) => updateRoom({ roomIdInput: event.target.value })} />
+              </div>
+              <button type="button" disabled={isBusy || !roomIdInput} onClick={joinRoom} style={{marginTop: '1.25rem', width: '100%'}}>
+                Join Room
+              </button>
+            </article>
+          </div>
         </div>
       ) : null}
 
@@ -805,6 +858,17 @@ export default function RoomPage() {
               <button type="button" disabled={selectedOption < 0 || submitted} onClick={submitQuizAnswer}>
                 {submitted ? "Submitted" : "Submit Answer"}
               </button>
+              <div className="action-row" style={{ marginTop: "1rem" }}>
+                <button type="button" className="secondary-btn" disabled={hasVotedToEnd} onClick={voteToEndSession}>
+                  {hasVotedToEnd ? "Voted to End" : "Vote to End Quiz"}
+                </button>
+              </div>
+              {endVote?.active ? (
+                <p className="muted-text">
+                  End vote: {endVote.yesVoters?.length ?? 0}/{endVote.requiredVotes ?? participants.length} yes
+                  {endVote.requestedBy ? ` (requested by ${endVote.requestedBy})` : ""}
+                </p>
+              ) : null}
             </>
           ) : null}
         </article>
@@ -873,33 +937,19 @@ export default function RoomPage() {
                 <button type="button" className="secondary-btn" onClick={submitSection}>
                   Submit Section
                 </button>
+                <button type="button" className="secondary-btn" disabled={hasVotedToEnd} onClick={voteToEndSession}>
+                  {hasVotedToEnd ? "Voted to End" : "Vote to End Test"}
+                </button>
               </div>
+              {endVote?.active ? (
+                <p className="muted-text">
+                  End vote: {endVote.yesVoters?.length ?? 0}/{endVote.requiredVotes ?? participants.length} yes
+                  {endVote.requestedBy ? ` (requested by ${endVote.requestedBy})` : ""}
+                </p>
+              ) : null}
             </>
           ) : null}
         </article>
-      ) : null}
-
-      {roomId ? (
-        <aside className="realtime-sidebar">
-          <h3>Participants ({participants.length})</h3>
-          <ul className="participant-list">
-            {participants.map((participant) => {
-              const answered = mode === "QUIZ" && roomStatus === "ACTIVE" && quizAnsweredUsers.includes(participant);
-              return (
-                <li key={participant} className="participant-item">
-                  <span className={answered ? "answer-dot answered" : "answer-dot"} />
-                  <span>{participant}</span>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="presence-toast-stack">
-            {presenceToasts.map((toast) => (
-              <div key={toast.id} className="presence-toast">{toast.message}</div>
-            ))}
-          </div>
-        </aside>
       ) : null}
 
       {roomStatus === "FINISHED" ? (
@@ -919,9 +969,46 @@ export default function RoomPage() {
           <p className="muted-text">Use History page for detailed report and analytics.</p>
         </article>
       ) : null}
+        </div>
+
+      {roomId ? (
+        <aside className="realtime-sidebar panel" style={{ position: 'sticky', top: '100px', alignSelf: 'start', padding: '1.5rem', margin: 0 }}>
+          <h3 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.25rem' }}>Participants ({participants.length})</h3>
+          <ul className="participant-list">
+            {participants.map((participant) => {
+              const answered = mode === "QUIZ" && roomStatus === "ACTIVE" && quizAnsweredUsers.includes(participant);
+              return (
+                <li key={participant} className="participant-item">
+                  <span className={answered ? "answer-dot answered" : "answer-dot"} />
+                  <span>{participant}</span>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="presence-toast-stack">
+            {presenceToasts.map((toast) => (
+              <div key={toast.id} className="presence-toast">{toast.message}</div>
+            ))}
+          </div>
+        </aside>
+      ) : null}
+      </div>
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

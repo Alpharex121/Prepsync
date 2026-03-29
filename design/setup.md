@@ -117,7 +117,7 @@ Prerequisites:
 From repo root:
 
 ```powershell
-docker compose up -d
+# docker compose up -d
 ```
 
 ## 2.2 Backend setup

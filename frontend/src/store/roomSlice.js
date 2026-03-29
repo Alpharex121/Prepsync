@@ -41,6 +41,7 @@ const initialState = {
   sectionQuestions: [],
   activeTestQuestionIndex: -1,
   testAnsweredQuestionIndices: [],
+  endVote: null,
 };
 
 function applySessionReset(state) {
@@ -58,6 +59,7 @@ function applySessionReset(state) {
   state.testAnsweredQuestionIndices = [];
   state.finalResults = null;
   state.leaderboard = [];
+  state.endVote = null;
 }
 
 const roomSlice = createSlice({
@@ -99,4 +101,6 @@ const roomSlice = createSlice({
 export const { patchRoom, addParticipant, setParticipants, resetSessionViews, resetRoomState } = roomSlice.actions;
 
 export default roomSlice.reducer;
+
+
 
