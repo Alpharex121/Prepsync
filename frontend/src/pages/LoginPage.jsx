@@ -12,6 +12,7 @@ export default function LoginPage() {
 
   const { login, register } = useAuth();
   const navigate = useNavigate();
+  const isRegisterMode = mode === "register";
 
   const title = useMemo(() => (mode === "login" ? "Login" : "Create Account"), [mode]);
 
@@ -47,6 +48,9 @@ export default function LoginPage() {
           maxLength={30}
           required
         />
+        {isRegisterMode ? (
+          <p className="field-hint">Username must be between 3 and 30 characters.</p>
+        ) : null}
 
         <label htmlFor="password">Password</label>
         <input
@@ -58,6 +62,9 @@ export default function LoginPage() {
           maxLength={128}
           required
         />
+        {isRegisterMode ? (
+          <p className="field-hint">Password must be between 8 and 128 characters.</p>
+        ) : null}
 
         {error ? <p className="error-text">{error}</p> : null}
 
